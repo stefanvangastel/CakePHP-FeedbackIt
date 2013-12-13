@@ -45,4 +45,19 @@
 
 #feedbackit-highlight-holder{
   position:absolute;
+  display:none;
+  width:150px;
+  height: 150px;
+}
+
+#feedbackit-highlight-holder img{
+  width:150px;
+  height: 150px;
+  opacity:0.5;
+}
+
+.feedbackit-small-img{
+  max-width: 256px;
+  max-height: 256px;
+  border:1px solid black;
 }

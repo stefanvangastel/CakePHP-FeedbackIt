@@ -36,7 +36,7 @@ echo $this->Html->script(
   </div>
 </div>
 
-<div id="feedbackit-highlight-holder">hier</div>
+<div id="feedbackit-highlight-holder"><?php echo $this->Html->image('FeedbackIt.circle.gif');?></div>
 
 <script>
 
@@ -54,13 +54,19 @@ $('#feedbackit-submit').click(function(){
 	    //encode the image data as a base64 encoded PNG file and return it
 	    var strDataURI = canvas.toDataURL(); 
 
+	    //Serialize the feedback form
 	    var postData = $('#feedbackit-form').serializeArray();
 
+	    //Add screenshot
 	    postData.push({name:'screenshot',value:strDataURI});
 
-	    console.log(postData);
+	    //Add current URL
+	    postData.push({name:'url',value:document.URL});
 
+	    //Create URL using cake's url helper
 	    var formURL = '<?php echo $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"savefeedback"),true); ?>';
+	    
+	    //Ajax call to controller to save this feedback report
 	    $.ajax(
 	    {
 	        url : formURL,
@@ -70,6 +76,7 @@ $('#feedbackit-submit').click(function(){
 	        {
 	        	$('#feedbackit-subject').val(''); //Reset
 	        	$('#feedbackit-feedback').val(''); //Reset
+	        	$( "#feedbackit-highlight-holder" ).css( "display", 'none');
 	            alert('Thank you. Your feedback was submitted.');
 	        },
 	        error: function(jqXHR, textStatus, errorThrown) 
@@ -113,8 +120,8 @@ $('#feedbackit-highlight').mouseup(function(){
 	    }
 	 
 	 	//Set position, to exactly center substract half the width and height from the x and y position
-		$( "#feedbackit-highlight-holder" ).css( "left", posx);
-	    $( "#feedbackit-highlight-holder" ).css( "top", posy);
+		$( "#feedbackit-highlight-holder" ).css( "left", posx - 75);
+	    $( "#feedbackit-highlight-holder" ).css( "top", posy - 75);
 		$( "#feedbackit-highlight-holder" ).css( "display", 'block');
 
 		//Reset highlight button
@@ -122,6 +129,7 @@ $('#feedbackit-highlight').mouseup(function(){
 
 		//Unbind click function
 		$('body').off('click');
+		e.preventDefault();
 	});
 
 });

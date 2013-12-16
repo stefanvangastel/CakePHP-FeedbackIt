@@ -5,7 +5,7 @@
   width: 35px;
   padding: 12px 0;
   text-align: center;
-  background: #6DAD53;
+  background: #a8cad2;
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
@@ -13,12 +13,13 @@
   -webkit-border-radius:5px 0 0 5px;
   -moz-border-radius:5px 0 0 5px;
   border-radius:5px 0 0 5px;
+  display:none;
 }
 #feedbackit-slideout_inner {
   position: fixed;
   top: 200px;
   right: -250px;
-  background: #6DAD53;
+  background: #a8cad2;
   width: 200px;
   padding: 25px;
   height: 230px;

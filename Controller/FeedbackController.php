@@ -30,7 +30,7 @@ class FeedbackController extends AppController {
 
 
 	/*
-	Ajax function to save the feedback form
+	Ajax function to save the feedback form. Lots of TODO's on this side.
 	 */
 	public function savefeedback(){
 

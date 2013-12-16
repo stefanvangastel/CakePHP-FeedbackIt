@@ -52,5 +52,5 @@ Example controller and view are included!
 
 ## Images
 
-![Example of form](https://github.com/stefanvangastel/CakePHP-FeedbackIt/raw/master/examples/images/feedback_1.png "Example of form")
-![Example of result](https://github.com/stefanvangastel/CakePHP-FeedbackIt/raw/master/examples/images/feedback_2.png "Example of result")
+![Example of form](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_1.png "Example of form")
+![Example of result](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_2.png "Example of result")

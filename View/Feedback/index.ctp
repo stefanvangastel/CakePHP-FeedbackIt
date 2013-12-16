@@ -6,7 +6,7 @@ foreach($feedbacks as $feedback){
   ?>
 
   <div class="media">
-    <a class="pull-left" href="#">
+    <a class="pull-left" href="<?php echo $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"viewimage",$feedback['Feedback']['filename']),true); ?>" target="_blank">
       <img class="media-object feedbackit-small-img" src="data:image/png;base64,<?php echo $feedback['Feedback']['screenshot']; ?>">
     </a>
     <div class="media-body">

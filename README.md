@@ -49,3 +49,8 @@ Currently saves the following on form submit:
 ## Usage
 
 Example controller and view are included!
+
+## Images
+
+![Example of form](https://github.com/stefanvangastel/CakePHP-FeedbackIt/raw/master/examples/images/feedback_1.png "Example of form")
+![Example of result](https://github.com/stefanvangastel/CakePHP-FeedbackIt/raw/master/examples/images/feedback_2.png "Example of result")

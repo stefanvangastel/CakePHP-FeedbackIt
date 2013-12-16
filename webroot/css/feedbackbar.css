@@ -37,11 +37,13 @@
   height: 100px;
   margin-bottom: 6px;
 }
-#feedbackit-slideout:hover {
-  right: 250px;
+
+.feedbackit-slideout_outer {
+  right: 250px !important;
 }
-#feedbackit-slideout:hover #feedbackit-slideout_inner {
-  right: 0;
+
+.feedbackit-slideout_inner {
+  right: 0 !important;
 }
 
 #feedbackit-highlight-holder{

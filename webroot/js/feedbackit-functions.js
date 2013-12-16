@@ -140,4 +140,14 @@ $(document).ready(function(){
 	    return M[1];
     }
 
+    $("#feedbackit-slideout").click(function(){
+      //Open menu 
+      $("#feedbackit-slideout").addClass("feedbackit-slideout_outer");
+      $("#feedbackit-slideout_inner").addClass("feedbackit-slideout_inner");  
+	});
+	$("#feedbackit-cancel").click(function(){
+      //Close menu 
+      $("#feedbackit-slideout").removeClass("feedbackit-slideout_outer");
+      $("#feedbackit-slideout_inner").removeClass("feedbackit-slideout_inner"); 
+	});
 });

@@ -13,6 +13,10 @@ Features pure client-side screenshot function including user-placed highlight / 
 
 * [Bootstrap](http://getbootstrap.com/2.3.2/) TODO: Upgrade code to use Bootstrap 3.x
 
+**Includes:**
+
+* [html2canvas.js by niklasvh](https://github.com/niklasvh/html2canvas)
+
 ## Installation and Setup
 
 1. Check out a copy of the FeedbackIt CakePHP plugin from the repository using Git :

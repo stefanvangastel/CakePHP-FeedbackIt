@@ -15,6 +15,9 @@
   border-radius:5px 0 0 5px;
   display:none;
 }
+#feedbackit-slideout:hover {
+  cursor:pointer;
+}
 #feedbackit-slideout_inner {
   position: fixed;
   top: 200px;

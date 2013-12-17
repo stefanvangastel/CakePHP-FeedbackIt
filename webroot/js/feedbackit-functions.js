@@ -65,15 +65,6 @@ $(document).ready(function(){
 	});
 
 	/*
-	Cancel button click
-	 */
-	$('#feedbackit-cancel').click(function(){
-		$('#feedbackit-subject').val(''); //Reset
-		$('#feedbackit-feedback').val(''); //Reset
-		$( "#feedbackit-highlight-holder" ).css( "display", 'none');
-	});
-
-	/*
 	Hightlight button click
 	 */
 	$('#feedbackit-highlight').mouseup(function(){
@@ -125,6 +116,9 @@ $(document).ready(function(){
 	    });
 	});
 
+	/*
+	Detect browser
+	 */
 	function get_browser(){
 	    var N=navigator.appName, ua=navigator.userAgent, tem;
 	    var M=ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
@@ -132,6 +126,10 @@ $(document).ready(function(){
 	    M=M? [M[1], M[2]]: [N, navigator.appVersion, '-?'];
 	    return M[0];
     }
+
+    /*
+	Detect browser version
+	 */
 	function get_browser_version(){
 	    var N=navigator.appName, ua=navigator.userAgent, tem;
 	    var M=ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
@@ -140,14 +138,25 @@ $(document).ready(function(){
 	    return M[1];
     }
 
+    /*
+	Click on closed feedback tab
+	 */
     $("#feedbackit-slideout").click(function(){
-      //Open menu 
-      $("#feedbackit-slideout").addClass("feedbackit-slideout_outer");
-      $("#feedbackit-slideout_inner").addClass("feedbackit-slideout_inner");  
+		//Open menu 
+		$("#feedbackit-slideout").addClass("feedbackit-slideout_outer");
+		$("#feedbackit-slideout_inner").addClass("feedbackit-slideout_inner");  
 	});
+
+	/*
+	Click on cancel button
+	 */
 	$("#feedbackit-cancel").click(function(){
-      //Close menu 
-      $("#feedbackit-slideout").removeClass("feedbackit-slideout_outer");
-      $("#feedbackit-slideout_inner").removeClass("feedbackit-slideout_inner"); 
+      	//Close menu 
+      	$("#feedbackit-slideout").removeClass("feedbackit-slideout_outer");
+      	$("#feedbackit-slideout_inner").removeClass("feedbackit-slideout_inner"); 
+      	//Reset fields
+      	$('#feedbackit-subject').val(''); //Reset
+		$('#feedbackit-feedback').val(''); //Reset
+		$( "#feedbackit-highlight-holder" ).css( "display", 'none');
 	});
 });

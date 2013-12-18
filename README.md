@@ -12,6 +12,12 @@ Currently saves the following on form submit:
 * Browser
 * Browser version
 
+Save options include (configurable):
+
+* Filesystem
+* Mantis Bugtracker
+* Email
+
 ## Requirements
 
 **Required:**
@@ -42,7 +48,13 @@ Currently saves the following on form submit:
 
 	`CakePlugin::load('FeedbackIt');`
 
-3. Use the feedbackbar element in a view or layout to place the feedback tab on that (or those) pages. It doesn't matter where you place the following line since it uses absolute DOM element positioning.
+3. Copy the default feedbackit-config file:
+
+	Copy `../app/Plugin/FeedbackIt/Config/feedbackit-config.php.default` to `../app/Plugin/FeedbackIt/Config/feedbackit-config.php`
+
+	And adjust it to your needs.
+
+4. Use the feedbackbar element in a view or layout to place the feedback tab on that (or those) pages. It doesn't matter where you place the following line since it uses absolute DOM element positioning.
 
 	`<?php echo $this->element('FeedbackIt.feedbackbar');?>`
 

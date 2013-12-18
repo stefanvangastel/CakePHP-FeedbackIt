@@ -1,3 +1,11 @@
+##### Table of Contents  
+[Intro](#intro)  
+[Requirements](#requirements)  
+[Installation and setup](#installation)  
+[Usage](#usage)  
+[Examples](#examples)  
+
+<a name="intro"/>
 ## Intro
 
 This CakePHP plugin provides a static feedback tab on the side of the screen that enables website visitor to submit feedback or bugreports.
@@ -18,6 +26,7 @@ Save options include (configurable):
 * Mantis Bugtracker
 * Email
 
+<a name="requirements"/>
 ## Requirements
 
 **Required:**
@@ -32,6 +41,7 @@ Save options include (configurable):
 
 * [html2canvas.js by niklasvh](https://github.com/niklasvh/html2canvas)
 
+<a name="installation"/>
 ## Installation and Setup
 
 1. Check out a copy of the FeedbackIt CakePHP plugin from the repository using Git :
@@ -58,11 +68,13 @@ Save options include (configurable):
 
 	`<?php echo $this->element('FeedbackIt.feedbackbar');?>`
 
+<a name="usage"/>
 ## Usage
 
 Example controller and view are included!
 
-## Images
+<a name="examples"/>
+## Examples
 
 ![Example of form](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_1.png "Example of form")
 ![Example of result](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_2.png "Example of result")

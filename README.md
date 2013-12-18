@@ -23,7 +23,7 @@ Currently saves the following on form submit:
 Save options include (configurable):
 
 * Filesystem
-* Mantis Bugtracker
+* [Mantis Bugtracker](http://www.mantisbt.org/)
 * Email
 
 <a name="requirements"/>

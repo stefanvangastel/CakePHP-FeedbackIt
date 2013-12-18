@@ -1,0 +1,27 @@
+<?php
+
+$config = array(
+	'FeedbackIt' => array(
+		'method' => 'filesystem',	//Options: filesystem, mantis, mail
+
+	    'methods' => array(
+
+	        'filesystem' => array(
+	        	'location'=> APP.'tmp'.DS.'feedbackit', //Default is tmp/feedbackit/
+	    	),
+
+	    	'mantis' => array(
+	        	'api_url'=> 'http://example.com/mantis/api/soap/mantisconnect.php?wsdl', //Api url
+	        	'username'=> 'foo', //The Mantis user to use
+	        	'password'=> 'bar', //The password of the mantis user to use
+	        	'project_id'=> 1, //Set the project id of the project to put this feedback in
+	        	'category'=> 'General', //Default Mantis category
+	    	),
+	    	
+	        'mail' => array(
+	        	'to'=> 'foo@example.com',
+	        	'from'=> 'bar@example.com'
+	    	)
+	    )
+	)    
+);

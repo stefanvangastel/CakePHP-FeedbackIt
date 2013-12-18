@@ -4,9 +4,9 @@ $(document).ready(function(){
 	Hide all on IE < 9
 	*/
 	if( get_browser() == 'MSIE' && get_browser_version() <= 9 ){
-		$( "#feedbackit-slideout" ).css( "display", 'none');
+		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'none');
 	}else{
-		$( "#feedbackit-slideout" ).css( "display", 'block');
+		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'block');
 	}
 
 
@@ -16,7 +16,7 @@ $(document).ready(function(){
 	$('#feedbackit-submit').click(function(){
 
 		//Hide feedback slider
-		$('#feedbackit-slideout').hide();
+		$('#feedbackit-slideout,#feedbackit-slideout_inner').hide();
 
 		html2canvas(document.body, {
 		  onrendered: function(canvas) {
@@ -59,7 +59,7 @@ $(document).ready(function(){
 		    });
 		    
 		    //Show it again
-		    $('#feedbackit-slideout').show();
+		    $('#feedbackit-slideout,#feedbackit-slideout_inner').show();
 		  }
 		});
 	});
@@ -76,7 +76,7 @@ $(document).ready(function(){
 
 	        $(this).dequeue();
 
-	    }).delay(500).queue(function() {
+	    }).delay(250).queue(function() {
 	        
 	        /*
 			Highlight function
@@ -100,7 +100,7 @@ $(document).ready(function(){
 			 	//Set position, to exactly center substract half the width and height from the x and y position
 				$( "#feedbackit-highlight-holder" ).css( "left", posx - 75);
 			    $( "#feedbackit-highlight-holder" ).css( "top", posy - 75);
-				$( "#feedbackit-highlight-holder" ).css( "display", 'block');
+				$( "#feedbackit-highlight-holder" ).fadeIn();
 
 				//Reset highlight button
 				$('#feedbackit-highlight').button('reset');

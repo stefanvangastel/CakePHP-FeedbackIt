@@ -1,12 +1,30 @@
 <?php
 class FeedbackController extends AppController {
 	
+	public $uses = array('FeedbackIt.Feedbackstore');
+
+	public function beforeFilter(){
+		parent::beforeFilter();
+
+		//Config file location (if you use it)
+		$configfile = APP.'Plugin'.DS.'FeedbackIt'.DS.'Config'.DS.'feedbackit-config.php';
+
+		//Check if a config file exists:
+		if( file_exists($configfile) AND is_readable($configfile) ){
+			//Load config file into CakePHP config 
+			Configure::load('FeedbackIt.feedbackit-config');
+
+			return true;
+		}
+
+		//Throw error, config file required
+		throw new NotFoundException( __('No config file found. Please create one: ').' ('.$configfile.')' );
+	}
+
 	/*
 	Ajax function to save the feedback form. Lots of TODO's on this side.
 	 */
 	public function savefeedback(){
-
-		//TMP FUNCTION BODY, CREATE YOUR OWN OR WAIT FOR THE OPTIONS (Mail, fss)
 
 		//Is ajax action
 		$this->layout='ajax';
@@ -14,32 +32,34 @@ class FeedbackController extends AppController {
 		//Do not autorender
 		$this->autoRender = false;
 
-		//Set path
-		$savepath = APP.'tmp'.DS.'feedbackit'.DS;
-
 		//Save screenshot:
 		$this->request->data['screenshot'] = str_replace('data:image/png;base64,', '', $this->request->data['screenshot']);
 
 		//Add current time to data
 		$this->request->data['time'] = time();
 		
-		//Serialize and save the object to a store in the Cake's tmp dir.
-		if( ! file_exists($savepath ) ){
-			mkdir($savepath);
+		//Create feedbackObject
+		$feedbackObject = $this->request->data;
+		
+		//Determine method of saving
+		if( $method = Configure::read('FeedbackIt.method') ){
+
+			//Check method exists in Model
+			if( ! (method_exists($this->Feedbackstore, $method)) ){
+				throw new NotImplementedException( __('Method not found in Feedbackstore model:').' '.$method );
+			}
+
+			//Use method to save:
+			if( $this->Feedbackstore->$method($feedbackObject) ){
+				die("Feedback saved");
+			}else{
+				$this->response->statusCode(500);
+				die("Error saving feedback");
+			}
 		}
 
-		//Save serialized with timestamp + randnumber as filename
-		$filename = time() . '-' . rand(1000,9999).'.feedback';
-
-		//Add filename to data
-		$this->request->data['filename'] = $filename;
-
-		if(file_put_contents($savepath.$filename, serialize($this->request->data))){
-			echo "Feedback saved";
-		}else{
-			$this->response->statusCode(500);
-			echo "Error saving feedback";
-		}
+		//Throw error, method required
+		throw new NotFoundException( __('No save method found in config file') );
 	}
 
 	/*
@@ -47,8 +67,18 @@ class FeedbackController extends AppController {
 	 */
 	public function index(){
 
+		if(Configure::read('FeedbackIt.method') != 'filesystem'){
+			$this->Session->setFlash(__('This function is only available with filesystem save method'));
+			$this->redirect($this->referrer());
+		}
+
 		//Find all files in feedbackit dir
-		$savepath = APP.'tmp'.DS.'feedbackit'.DS;
+		$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
+
+		//Check dir
+		if( ! file_exists($savepath) ){
+			throw new NotFoundException( __('Feedback location not found: ').$savepath );
+		}
 
 		//Creat feedback array in a cake-like way
 		$feedbacks = array();
@@ -89,6 +119,5 @@ class FeedbackController extends AppController {
 
 		$this->layout = 'ajax';
 	}
-	
 }
 ?> 

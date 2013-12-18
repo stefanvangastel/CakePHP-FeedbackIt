@@ -24,7 +24,7 @@ echo $this->Html->script(
     <input type="text" name="subject" id="feedbackit-subject" placeholder="<?php echo __('Subject'); ?>">
     <textarea name="feedback" id="feedbackit-feedback" placeholder="<?php echo __('Feedback or suggestion'); ?>" rows="3"></textarea>
     <p>
-    	<button class="btn btn-warning" data-loading-text="<?php echo __('Click anywhere on website'); ?>" id="feedbackit-highlight" onclick="return false;"><i class="icon-screenshot icon-white"></i> <?php echo __('Highlight something'); ?></button>
+    	<button class="btn btn-primary" data-loading-text="<?php echo __('Click anywhere on website'); ?>" id="feedbackit-highlight" onclick="return false;"><i class="icon-screenshot icon-white"></i> <?php echo __('Highlight something'); ?></button>
     </p>
     <p>
     	<div class="btn-group">

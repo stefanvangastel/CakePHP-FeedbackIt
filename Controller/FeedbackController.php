@@ -87,7 +87,6 @@ class FeedbackController extends AppController {
 		foreach(glob($savepath.'*.feedback') as $feedbackfile){
 
 			$feedbackobject = unserialize(file_get_contents($feedbackfile));
-
 			$feedbacks[$feedbackobject['time']]['Feedback'] = $feedbackobject;
 
 		}
@@ -103,7 +102,7 @@ class FeedbackController extends AppController {
 	 */
 	public function viewimage($feedbackfile){
 
-		$savepath = APP.'tmp'.DS.'feedbackit'.DS;
+		$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
 
 		if( ! file_exists($savepath.$feedbackfile) ){
 			 throw new NotFoundException( __('Could not find that file') );

@@ -22,9 +22,9 @@ $config = array(
 	        	'http_password' => false //Option password for HTTP auth, use false if not used
 	    	),
 	    	
-	        'mail' => array(
+	         'mail' => array(
 	        	'to'=> 'foo@example.com',
-	        	'from'=> 'bar@example.com'
+	        	'from'=> array('bar@example.com'=>'Bar is my name'),
 	    	)
 	    )
 	)    

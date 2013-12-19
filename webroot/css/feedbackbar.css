@@ -1,6 +1,6 @@
 #feedbackit-slideout {
   position: fixed;
-  top: 200px;
+  top: 100px;
   right: 0;
   width: 35px;
   padding: 12px 0;
@@ -20,12 +20,12 @@
 }
 #feedbackit-slideout_inner {
   position: fixed;
-  top: 200px;
+  top: 100px;
   right: -250px;
   background: #a8cad2;
   width: 200px;
   padding: 25px;
-  height: 230px;
+  height: 350px;
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;

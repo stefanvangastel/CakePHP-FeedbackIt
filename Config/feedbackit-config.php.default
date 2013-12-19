@@ -7,7 +7,7 @@ $config = array(
 	    'methods' => array(
 
 	        'filesystem' => array(
-	        	'location'=> APP.'tmp'.DS.'feedbackit', //Default is tmp/feedbackit/
+	        	'location'=> APP.'tmp'.DS.'feedbackit'.DS, //Default is tmp/feedbackit/
 	    	),
 
 	    	'mantis' => array(
@@ -16,7 +16,7 @@ $config = array(
 	        	'password'=> 'bar', //The password of the mantis user to use
 	        	'project_id'=> 1, //Set the project id of the project to put this feedback in
 	        	'category'=> 'General', //Default Mantis category
-	        	'decodeimage'=> true, //Decode image or not (Seems to differ in different mantis versions?)
+	        	'decodeimage'=> true, //Decode image or not (Seems to differ in different Mantis versions?)
   	
 	        	'http_username' => false, //Optional username for HTTP auth, use false if not used
 	        	'http_password' => false //Option password for HTTP auth, use false if not used

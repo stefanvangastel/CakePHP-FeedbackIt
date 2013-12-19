@@ -13,7 +13,7 @@ $(document).ready(function(){
 	/*
 	Submit button click
 	 */
-	$('#feedbackit-submit').click(function(){
+	$('#feedbackit-form').submit(function(e){
 
 		//Hide feedback slider
 		$('#feedbackit-slideout,#feedbackit-slideout_inner').hide();
@@ -47,9 +47,8 @@ $(document).ready(function(){
 		        data : postData,
 		        success:function(data, textStatus, jqXHR) 
 		        {
-		        	$('#feedbackit-subject').val(''); //Reset
-		        	$('#feedbackit-feedback').val(''); //Reset
-		        	$( "#feedbackit-highlight-holder" ).css( "display", 'none');
+		        	closeandreset();
+
 		            alert('Thank you. Your feedback was submitted.');
 		        },
 		        error: function(jqXHR, textStatus, errorThrown) 
@@ -62,12 +61,17 @@ $(document).ready(function(){
 		    $('#feedbackit-slideout,#feedbackit-slideout_inner').show();
 		  }
 		});
+
+		e.preventDefault();
 	});
 
 	/*
 	Hightlight button click
 	 */
 	$('#feedbackit-highlight').mouseup(function(){
+
+		//Fadeout highlight if any
+		$("#feedbackit-highlight-holder").fadeOut();
 
 		$(this).queue(function() {
 	       
@@ -117,6 +121,22 @@ $(document).ready(function(){
 	});
 
 	/*
+	Checkbox
+	 */
+	$('#feedbackit-okay').change(function(){
+		
+		if( $(this).is(':checked') ){
+			//Enable button
+			$("#feedbackit-submit").removeAttr("disabled");  
+			return;
+		}
+
+		//Disable button
+		$("#feedbackit-submit").attr("disabled", "disabled");
+		return;
+	});
+
+	/*
 	Detect browser
 	 */
 	function get_browser(){
@@ -151,12 +171,26 @@ $(document).ready(function(){
 	Click on cancel button
 	 */
 	$("#feedbackit-cancel").click(function(){
-      	//Close menu 
+      	closeandreset();
+	});	
+
+	/*
+	Close and reset function
+	 */
+	function closeandreset(){
+		//Close menu 
       	$("#feedbackit-slideout").removeClass("feedbackit-slideout_outer");
       	$("#feedbackit-slideout_inner").removeClass("feedbackit-slideout_inner"); 
       	//Reset fields
-      	$('#feedbackit-subject').val(''); //Reset
-		$('#feedbackit-feedback').val(''); //Reset
-		$( "#feedbackit-highlight-holder" ).css( "display", 'none');
-	});
+      	$('.feedbackit-input').val(''); //Reset
+      	$('#feedbackit-okay').attr('checked', false);
+      	$("#feedbackit-submit").attr("disabled", "disabled");
+		$("#feedbackit-highlight-holder").fadeOut();
+	}
+
+	/*
+	Activate tooltip for screenshot approval
+	 */
+	
+	$('#feedbackit-okay-message').tooltip();
 });

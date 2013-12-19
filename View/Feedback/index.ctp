@@ -16,6 +16,8 @@ foreach($feedbacks as $feedback){
       <?php echo $feedback['Feedback']['url'];?>
       <br />
       <?php echo $feedback['Feedback']['browser'];?> <?php echo $feedback['Feedback']['browser_version'];?>
+      <br />
+      By <?php echo $feedback['Feedback']['name'];?>
     </div>
   </div>
 

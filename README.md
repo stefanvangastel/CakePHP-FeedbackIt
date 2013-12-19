@@ -1,9 +1,9 @@
 ##### Table of Contents  
-[Intro](#intro)  
-[Requirements](#requirements)  
-[Installation and setup](#installation)  
-[Usage](#usage)  
-[Examples](#examples)  
+* [Intro](#intro)  
+* [Requirements](#requirements)  
+* [Installation and setup](#installation)  
+* [Usage](#usage)  
+* [Examples](#examples)  
 
 <a name="intro"/>
 ## Intro

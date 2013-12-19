@@ -37,6 +37,11 @@ class FeedbackController extends AppController {
 
 		//Add current time to data
 		$this->request->data['time'] = time();
+
+		//Check name
+		if( empty($this->request->data['name']) ){
+			$this->request->data['name'] = "Anonymous";
+		}
 		
 		//Create feedbackObject
 		$feedbackObject = $this->request->data;

@@ -78,7 +78,8 @@ class Feedbackstore extends AppModel {
 		//Mantis specific: append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= "\n\n";
 		$feedbackObject['feedback'] .= sprintf("Browser: %s %s\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
-		$feedbackObject['feedback'] .= sprintf("Url: %s",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("Url: %s\n",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("By: %s",$feedbackObject['name']);
 
 	    //Create new issue
 		$issue = array ( 
@@ -139,7 +140,8 @@ class Feedbackstore extends AppModel {
 		//Mail specific: append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= "<p>";
 		$feedbackObject['feedback'] .= sprintf("Browser: %s %s<br />",$feedbackObject['browser'],$feedbackObject['browser_version']);
-		$feedbackObject['feedback'] .= sprintf("Url: %s",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("Url: %s<br />",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("By: %s<br />",$feedbackObject['name']);
 		$feedbackObject['feedback'] .= "</p>";
 		$feedbackObject['feedback'] .= '<img src="cid:id-screenshot">'; //Add inline screenshot
 

@@ -11,11 +11,15 @@ $config = array(
 	    	),
 
 	    	'mantis' => array(
-	        	'api_url'=> 'http://example.com/mantis/api/soap/mantisconnect.php?wsdl', //Api url
+	        	'api_url'=> 'http://example.com/api/soap/mantisconnect.php?wsdl', //Api url
 	        	'username'=> 'foo', //The Mantis user to use
 	        	'password'=> 'bar', //The password of the mantis user to use
 	        	'project_id'=> 1, //Set the project id of the project to put this feedback in
 	        	'category'=> 'General', //Default Mantis category
+	        	'decodeimage'=> true, //Decode image or not (Seems to differ in different mantis versions?)
+  	
+	        	'http_username' => false, //Optional username for HTTP auth, use false if not used
+	        	'http_password' => false //Option password for HTTP auth, use false if not used
 	    	),
 	    	
 	        'mail' => array(

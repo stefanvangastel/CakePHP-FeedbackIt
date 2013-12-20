@@ -91,8 +91,8 @@ class FeedbackController extends AppController {
 		//Loop through files
 		foreach(glob($savepath.'*.feedback') as $feedbackfile){
 
-			$feedbackobject = unserialize(file_get_contents($feedbackfile));
-			$feedbacks[$feedbackobject['time']]['Feedback'] = $feedbackobject;
+			$feedbackObject = unserialize(file_get_contents($feedbackfile));
+			$feedbacks[$feedbackObject['time']]['Feedback'] = $feedbackObject;
 
 		}
 

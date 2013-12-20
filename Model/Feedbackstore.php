@@ -146,9 +146,55 @@ class Feedbackstore extends AppModel {
 		$feedbackObject['feedback'] .= '<img src="cid:id-screenshot">'; //Add inline screenshot
 
 		if( $email->send($feedbackObject['feedback']) ){
+			unlink($tmpfile);
 			return true;
 		}
-
+		unlink($tmpfile);
 		return false;
+	}
+
+	/*
+	Github API v3 NO IMAGE SUPPORT YET
+	 */
+	public function github($feedbackObject = null){
+
+		if(empty($feedbackObject)){
+			return false;
+		}
+
+		//Read settings
+		$api_url	= Configure::read('FeedbackIt.methods.github.api_url');
+		$username	= Configure::read('FeedbackIt.methods.github.username');
+		$password	= Configure::read('FeedbackIt.methods.github.password');
+
+		//Mantis specific: append browser, browser version and URL to feedback:
+		$feedbackObject['feedback'] .= "\n\n";
+		$feedbackObject['feedback'] .= sprintf("Browser: %s %s\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
+		$feedbackObject['feedback'] .= sprintf("Url: %s\n",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("By: %s",$feedbackObject['name']);
+
+		//TODO: Optional, append image (link) to this websites ../feedback_it/feedback/viewimage/xxx url or something
+
+		//Prepare data 
+		$data = array("title" => $feedbackObject['subject'], "body" => $feedbackObject['feedback']);
+		$data_string = json_encode($data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $api_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+
+		$result = curl_exec($ch); 
+
+		if( ! $result){
+			throw new InternalErrorException( curl_error($ch) );
+		}
+
+		return true;
 	}
 }

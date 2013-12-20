@@ -51,7 +51,7 @@ echo $this->Html->script(
     </p>
     <p>
         <label class="checkbox">
-          <input type="checkbox" id="feedbackit-okay">
+          <input type="checkbox" required id="feedbackit-okay">
             I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo __('When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.');?>">this</a></b>.
         </label>
     </p>

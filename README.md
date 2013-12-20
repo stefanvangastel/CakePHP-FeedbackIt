@@ -24,6 +24,7 @@ Save options include (configurable):
 
 * Filesystem
 * [Mantis Bugtracker](http://www.mantisbt.org/)
+* GitHub (repo issues)(https://help.github.com/articles/github-glossary#issue)
 * Email
 
 <a name="requirements"/>

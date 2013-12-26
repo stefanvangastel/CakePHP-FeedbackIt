@@ -25,7 +25,7 @@
   background: #a8cad2;
   width: 200px;
   padding: 25px;
-  height: 350px;
+  height: 380px;
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
@@ -38,7 +38,11 @@
 #feedbackit-slideout_inner textarea {
   width: 190px;
   height: 100px;
-  margin-bottom: 6px;
+}
+
+/* @kieranbarnes overwrite form-group 15px margin-bottom */
+#feedbackit-slideout_inner div.form-group {
+	margin-bottom: 6px;
 }
 
 .feedbackit-slideout_outer {

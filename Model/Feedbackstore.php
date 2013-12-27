@@ -37,7 +37,7 @@ class Feedbackstore extends AppModel {
 			
 			$msg = __('Thank you. Your feedback was saved.');
 
-			if( Configure::read('FeedbackIt.methods.filesystem.location') ){
+			if( Configure::read('FeedbackIt.returnlink') ){
 				$msg .= ' ';
 				$msg .= __('View your feedback on: ');
 				

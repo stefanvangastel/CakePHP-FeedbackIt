@@ -36,7 +36,7 @@ Save options include (configurable):
 
 **Optional:**
 
-* [Bootstrap](http://getbootstrap.com/2.3.2/) TODO: Upgrade code to use Bootstrap 3.x
+* [Bootstrap](http://getbootstrap.com) (Bootstrap 2 and 3 compatible)
 
 **Includes:**
 

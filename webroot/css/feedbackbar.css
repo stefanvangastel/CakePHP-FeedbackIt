@@ -23,8 +23,8 @@
   top: 100px;
   right: -250px;
   background: #a8cad2;
-  width: 200px;
-  padding: 25px;
+  width: 250px !important;
+ /* padding: 15px;*/
   height: 380px;
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
@@ -35,9 +35,9 @@
   -moz-border-radius: 0 0 0 5px;
   border-radius: 0 0 0 5px;
 }
-#feedbackit-slideout_inner textarea {
-  width: 190px;
-  height: 100px;
+
+.feedbackit-form-elements{
+  padding:15px;
 }
 
 /* @kieranbarnes overwrite form-group 15px margin-bottom */
@@ -71,3 +71,4 @@
   max-height: 256px;
   border:1px solid black;
 }
+

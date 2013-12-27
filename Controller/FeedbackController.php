@@ -13,7 +13,6 @@ class FeedbackController extends AppController {
 		if( file_exists($configfile) AND is_readable($configfile) ){
 			//Load config file into CakePHP config 
 			Configure::load('FeedbackIt.feedbackit-config');
-
 			return true;
 		}
 

@@ -8,36 +8,41 @@ class Feedbackstore extends AppModel {
 	public $useTable = false;
 
 	/*
-	Store functions for different save methods
-	 */
+    Store functions for different save methods
+   	 */
 	public function filesystem($feedbackObject = null){
-
-		if(empty($feedbackObject)){
+		if (empty($feedbackObject)){
 			return false;
-		}
+    	}
+		$feedbackObject = $this->saveFile($feedbackObject);
+		if (isset($feedbackObject['filename'])){
+			return true;
+    	}
+    	return false;
+	}
 
-		//Get save path from config
-		$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
-
-		//Serialize and save the object to a store in the Cake's tmp dir.
-		if( ! file_exists($savepath ) ){
-			if( ! mkdir($savepath) ){
-				//Throw error, directory is requird
-				throw new NotFoundException( __('Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ').$savepath  );
+	/*
+   	 * Auxiliary function that saves the file 
+     */
+  	private function saveFile($feedbackObject = null)
+	{
+    	//Get save path from config
+    	$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
+    	//Serialize and save the object to a store in the Cake's tmp dir.
+    	if (!file_exists($savepath)){
+			if (!mkdir($savepath)){
+			//Throw error, directory is requird
+			throw new NotFoundException(__('Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
 			}
 		}
-
 		//Save serialized with timestamp + randnumber as filename
-		$filename = time() . '-' . rand(1000,9999).'.feedback';
+		$filename = time() . '-' . rand(1000, 9999) . '.feedback';
 
-		//Add filename to data
-		$feedbackObject['filename'] = $filename;
-
-		if(file_put_contents($savepath.$filename, serialize($feedbackObject))){
-			return true;
+		if (file_put_contents($savepath . $filename, serialize($feedbackObject))){
+			//Add filename to data
+			$feedbackObject['filename'] = $filename;
 		}
-
-		return false;
+		return $feedbackObject;
 	}
 
 	/*
@@ -208,16 +213,24 @@ class Feedbackstore extends AppModel {
     	$api_url = Configure::read('FeedbackIt.methods.bitbucket.api_url');
     	$username = Configure::read('FeedbackIt.methods.bitbucket.username');
     	$password = Configure::read('FeedbackIt.methods.bitbucket.password');
+    	$localimagestore = Configure::read('FeedbackIt.methods.bitbucket.localimagestore');
 
 		//Append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n", $feedbackObject['name']);
 		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n", $feedbackObject['browser'], $feedbackObject['browser_version']);
 		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n", $feedbackObject['url']);    
     
-    	//TODO: Optional, append image (link) to this websites ../feedback_it/feedback/viewimage/xxx url or something
-		// $feedbackObject['feedback'] .= sprintf("**Screenshot**: ![Screenshot](%s)\n\n", WWW_ROOT . '/feedback_it/feedback/viewimage/1234.png');
-		// This doesn't work in Bitbucket. Their Markup language doesn't support this kind of images
-		// $feedbackObject['feedback'] .= '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
+		// WARNING: This may not work for sites with different domains (or dev environments)
+    	//          If the given URL is not public, Bitbucket won't display the screenshot
+		if ($localimagestore){
+			$newFeedbackObject = $this->saveFile($feedbackObject);
+			$viewimageUrl = Router::fullBaseUrl();
+			$viewimageUrl .= Router::url('/feedback_it/feedback/viewimage/');
+			$viewimageUrl .= $newFeedbackObject['filename'];
+			$feedbackObject['feedback'] .= sprintf("**Screenshot**: ![screenshot](%s)\n\n", $viewimageUrl);
+		}
+		// Bitbucket still doesn't support this kind of image format in Markup Language
+		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
 
     	//Prepare data 
 		$data = array("title" => $feedbackObject['subject'], "content" => $feedbackObject['feedback']);
@@ -227,12 +240,13 @@ class Feedbackstore extends AppModel {
     	$HttpSocket->configAuth('Basic', $username, $password);
     	$result = $HttpSocket->post($api_url, $data);
 
+    	// TODO: A better error management
     	if (!$result)
     	{
     	  throw new InternalErrorException($HttpSocket->lastError());
     	}
 
-    return true;
+		return true;
 	}
 
 }

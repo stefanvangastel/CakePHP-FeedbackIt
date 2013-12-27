@@ -1,14 +1,17 @@
 $(document).ready(function(){
 
+	var confirmMessage = 'Your feedback was submitted succesfully.';
+	var errorMessage   = 'There was an error submitting your feedback. Please try again later.';
+
+
 	/*
-	Hide all on IE < 9
+	Hide all on IE < 9 OR Firefox <= 3.5
 	*/
-	if( get_browser() == 'MSIE' && get_browser_version() <= 9 ){
+	if( (get_browser() == 'MSIE' && get_browser_version() <= 9) OR (get_browser() == 'Firefox' && get_browser_version() <= 3.5)){
 		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'none');
 	}else{
 		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'block');
 	}
-
 
 	/*
 	Submit button click
@@ -42,18 +45,36 @@ $(document).ready(function(){
 		    //Ajax call to controller to save this feedback report
 		    $.ajax(
 		    {
-		        url : window.formURL,
+		        url : window.formURL, //Use url created in Element
 		        type: "POST",
 		        data : postData,
-		        success:function(data, textStatus, jqXHR) 
+		        success:function(message, textStatus, jqXHR) 
 		        {
 		        	closeandreset();
 
-		            alert('Thank you. Your feedback was submitted.');
+		        	/*
+		        	Only use modal if TwitterBootstrap Javascript is loaded
+		        	 */
+		        	if( $.isFunction( $.fn.modal ) ){
+		        		$('#feedbackit-modal .modal-body').html(confirmMessage);
+		            	$('#feedbackit-modal').modal('show');
+		        	}else{
+		        		alert(confirmMessage);
+		        	}
+		        	
 		        },
 		        error: function(jqXHR, textStatus, errorThrown) 
 		        {
-		            alert('There was an error submitting your feedback. Please try again later.');    
+		        	/*
+		        	Only use modal if TwitterBootstrap Javascript is loaded
+		        	 */
+		        	if( $.isFunction( $.fn.modal ) ){
+		        		$('#feedbackit-modal .modal-title').html('Error');
+		        		$('#feedbackit-modal .modal-body').html(confirmMessage);
+		            	$('#feedbackit-modal').modal('show');
+		        	}else{
+		        		alert(confirmMessage);
+		        	}
 		        }
 		    });
 		    

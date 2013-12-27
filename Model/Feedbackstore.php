@@ -8,7 +8,7 @@ class Feedbackstore extends AppModel {
 	public $useTable = false;
 
 	/*
-    Store functions for different save methods
+	 * Store functions for different save methods
    	 */
 	public function filesystem($feedbackObject = null){
 		if (empty($feedbackObject)){
@@ -203,7 +203,7 @@ class Feedbackstore extends AppModel {
 		return true;
 	}
 
-	public function github($feedbackObject = null){
+	public function bitbucket($feedbackObject = null){
 
 		if (empty($feedbackObject)){
     		return false;

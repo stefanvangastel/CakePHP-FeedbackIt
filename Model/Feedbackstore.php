@@ -197,4 +197,42 @@ class Feedbackstore extends AppModel {
 
 		return true;
 	}
+
+	public function github($feedbackObject = null){
+
+		if (empty($feedbackObject)){
+    		return false;
+    	}
+
+    	//Read settings
+    	$api_url = Configure::read('FeedbackIt.methods.bitbucket.api_url');
+    	$username = Configure::read('FeedbackIt.methods.bitbucket.username');
+    	$password = Configure::read('FeedbackIt.methods.bitbucket.password');
+
+		//Append browser, browser version and URL to feedback:
+		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n", $feedbackObject['name']);
+		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n", $feedbackObject['browser'], $feedbackObject['browser_version']);
+		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n", $feedbackObject['url']);    
+    
+    	//TODO: Optional, append image (link) to this websites ../feedback_it/feedback/viewimage/xxx url or something
+		// $feedbackObject['feedback'] .= sprintf("**Screenshot**: ![Screenshot](%s)\n\n", WWW_ROOT . '/feedback_it/feedback/viewimage/1234.png');
+		// This doesn't work in Bitbucket. Their Markup language doesn't support this kind of images
+		// $feedbackObject['feedback'] .= '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
+
+    	//Prepare data 
+		$data = array("title" => $feedbackObject['subject'], "content" => $feedbackObject['feedback']);
+
+		App::uses('HttpSocket', 'Network/Http');
+		$HttpSocket = new HttpSocket(array('ssl_verify_peer' => false));
+    	$HttpSocket->configAuth('Basic', $username, $password);
+    	$result = $HttpSocket->post($api_url, $data);
+
+    	if (!$result)
+    	{
+    	  throw new InternalErrorException($HttpSocket->lastError());
+    	}
+
+    return true;
+	}
+
 }

@@ -111,7 +111,20 @@ class Feedbackstore extends AppModel {
 
 	    	//Add screenshot to issue (Do not send as base64 despite what de WSDL says)
 			if ( $c->mc_issue_attachment_add( $username,  $password, $issueid, date('d-m-Y_H-i-s').'.png', 'image/png', $feedbackObject['screenshot'] )){
-				return __('Thank you. Your feedback was saved.');
+				
+				$msg = __('Thank you. Your feedback was saved.');
+
+				if( Configure::read('FeedbackIt.returnlink') ){
+					$msg .= ' ';
+					$msg .= __('View your feedback on: ');
+					
+					list($url,$tmp) = explode('api',$api_url );
+					$url .= 'view.php?id=' . $issueid;
+
+					$msg .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+				}
+
+				return $msg;
 			}
 		}
 

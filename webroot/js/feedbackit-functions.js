@@ -3,11 +3,10 @@ $(document).ready(function(){
 	var confirmMessage = 'Your feedback was submitted succesfully.';
 	var errorMessage   = 'There was an error submitting your feedback. Please try again later.';
 
-
 	/*
 	Hide all on IE < 9 OR Firefox <= 3.5
 	*/
-	if( (get_browser() == 'MSIE' && get_browser_version() <= 9) OR (get_browser() == 'Firefox' && get_browser_version() <= 3.5)){
+	if( (get_browser() == 'MSIE' && get_browser_version() <= 9) || (get_browser() == 'Firefox' && get_browser_version() <= 3.5)){
 		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'none');
 	}else{
 		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'block');
@@ -56,7 +55,7 @@ $(document).ready(function(){
 		        	Only use modal if TwitterBootstrap Javascript is loaded
 		        	 */
 		        	if( $.isFunction( $.fn.modal ) ){
-		        		$('#feedbackit-modal .modal-body').html(confirmMessage);
+		        		$('#feedbackit-modal .modal-body').html(message);
 		            	$('#feedbackit-modal').modal('show');
 		        	}else{
 		        		alert(confirmMessage);
@@ -70,10 +69,10 @@ $(document).ready(function(){
 		        	 */
 		        	if( $.isFunction( $.fn.modal ) ){
 		        		$('#feedbackit-modal .modal-title').html('Error');
-		        		$('#feedbackit-modal .modal-body').html(confirmMessage);
+		        		$('#feedbackit-modal .modal-body').html(errorMessage);
 		            	$('#feedbackit-modal').modal('show');
 		        	}else{
-		        		alert(confirmMessage);
+		        		alert(errorMessage);
 		        	}
 		        }
 		    });
@@ -97,7 +96,11 @@ $(document).ready(function(){
 		$(this).queue(function() {
 	       
 	       	//Disable button and show loading text
-			$('#feedbackit-highlight').button('loading');
+	       	try{
+				$('#feedbackit-highlight').button('loading');
+			}catch(err){
+				console.log(err.message + ' This requires TwitterBootstrap js to be loaded.');
+			}
 
 	        $(this).dequeue();
 
@@ -128,7 +131,11 @@ $(document).ready(function(){
 				$( "#feedbackit-highlight-holder" ).fadeIn();
 
 				//Reset highlight button
-				$('#feedbackit-highlight').button('reset');
+				try{
+					$('#feedbackit-highlight').button('reset');
+				}catch(err){
+					console.log(err.message + ' This requires TwitterBootstrap js to be loaded.');
+				}
 
 				//Unbind click function
 				$('body').off('click');
@@ -212,6 +219,7 @@ $(document).ready(function(){
 	/*
 	Activate tooltip for screenshot approval
 	 */
-	
-	$('#feedbackit-okay-message').tooltip();
+	if( $.isFunction( $.fn.modal ) ){ //This is still quite dirty. For some reason the tooltip function is always loaded, even if not the TB tooltip. So we check for modal which is TB only
+		$('#feedbackit-okay-message').tooltip();
+	}
 });

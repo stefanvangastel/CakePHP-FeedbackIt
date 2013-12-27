@@ -34,7 +34,19 @@ class Feedbackstore extends AppModel {
 		$feedbackObject['filename'] = $filename;
 
 		if(file_put_contents($savepath.$filename, serialize($feedbackObject))){
-			return true;
+			
+			$msg = __('Thank you. Your feedback was saved.');
+
+			if( Configure::read('FeedbackIt.methods.filesystem.location') ){
+				$msg .= ' ';
+				$msg .= __('View your feedback on: ');
+				
+				$url  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'index'),true);
+
+				$msg .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+			}
+			
+			return $msg;
 		}
 
 		return false;
@@ -98,7 +110,9 @@ class Feedbackstore extends AppModel {
 			}
 
 	    	//Add screenshot to issue (Do not send as base64 despite what de WSDL says)
-			return ($c->mc_issue_attachment_add( $username,  $password, $issueid, date('d-m-Y_H-i-s').'.png', 'image/png', $feedbackObject['screenshot'] ));
+			if ( $c->mc_issue_attachment_add( $username,  $password, $issueid, date('d-m-Y_H-i-s').'.png', 'image/png', $feedbackObject['screenshot'] )){
+				return __('Thank you. Your feedback was saved.');
+			}
 		}
 
 		return false;
@@ -147,7 +161,7 @@ class Feedbackstore extends AppModel {
 
 		if( $email->send($feedbackObject['feedback']) ){
 			unlink($tmpfile);
-			return true;
+			return __('Thank you. Your feedback was saved.');
 		}
 		unlink($tmpfile);
 		return false;
@@ -195,6 +209,6 @@ class Feedbackstore extends AppModel {
 			throw new InternalErrorException( curl_error($ch) );
 		}
 
-		return true;
+		return __('Thank you. Your feedback was saved.');
 	}
 }

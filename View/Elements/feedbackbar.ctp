@@ -22,7 +22,7 @@ echo $this->Html->script(
 <div id="feedbackit-slideout_inner">
     <div class="feedbackit-form-elements">
         <p>
-            <?php echo __('Send us your feedback or report a bug!');?>
+            <?php echo __('Send your feedback or bugreport!');?>
         </p>
         <form id="feedbackit-form" autocomplete="off" role="form">
          <div class="form-group">

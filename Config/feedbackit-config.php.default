@@ -3,7 +3,11 @@
 $config = array(
 	'FeedbackIt' => array(
 		'method' => 'filesystem',	//Options: filesystem, mantis, mail, github
+		'returnlink' => true,	//Return a link (if any) to the created ticket or report.
 
+		/*
+		Configure the different methods
+		 */
 	    'methods' => array(
 
 	        'filesystem' => array(

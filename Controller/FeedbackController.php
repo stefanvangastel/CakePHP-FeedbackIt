@@ -54,7 +54,12 @@ class FeedbackController extends AppController {
 			}
 
 			//Use method to save:
-			if( $this->Feedbackstore->$method($feedbackObject) ){
+			if( $msg = $this->Feedbackstore->$method($feedbackObject) ){
+					
+				if( ! is_bool($msg) ){
+					die($msg);
+				}
+
 				die("Feedback saved");
 			}else{
 				$this->response->statusCode(500);

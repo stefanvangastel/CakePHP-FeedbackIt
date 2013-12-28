@@ -26,6 +26,7 @@ Save options include (configurable):
 * [Mantis Bugtracker](http://www.mantisbt.org/)
 * [GitHub (repo issues)](https://help.github.com/articles/github-glossary#issue)
 * Email
+* [Bitbucket (repo issues)](https://confluence.atlassian.com/display/BITBUCKET/Use+the+issue+tracker)
 
 <a name="requirements"/>
 ## Requirements

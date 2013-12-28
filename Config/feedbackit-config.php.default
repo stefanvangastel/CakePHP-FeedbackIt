@@ -38,6 +38,13 @@ $config = array(
 
 	        	'localimagestore' => false, //WARNING: When set to true, the filesystem's location property and save method are used to (additionaly) store the feedback object for linking in GitHub issue post.
 	    	),
+	    	'bitbucket' => array(
+				'api_url'=> 'https://bitbucket.org/api/1.0/repositories/<accountname>/<repo_slug>/issues', //Bitbucket Api url (https://confluence.atlassian.com/display/BITBUCKET/issues+Resource#issuesResource-POSTanewissue)
+				'username'=> 'foo', //The Bitbucket user to use (must have pull access to repo)
+				'password'=> 'bar', //The password of the above Bitbucket user
+
+				'localimagestore' => true, //WARNING: When set to true, the filesystem's location property and save method are used to (additionaly) store the feedback object for linking in GitHub issue post.
+			),
 	    )
 	)    
 );

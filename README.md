@@ -18,8 +18,7 @@ Currently saves the following on form submit:
 * Message
 * Current URL
 * Screenshot of body DOM element
-* Browser
-* Browser version
+* Browser and browser version
 
 Save options include (configurable):
 

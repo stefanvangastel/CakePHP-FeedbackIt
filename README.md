@@ -13,6 +13,7 @@ Features pure client-side screenshot function including user-placed highlight / 
 
 Currently saves the following on form submit:
 
+* Name of sender (optional)
 * Subject
 * Message
 * Current URL

@@ -28,9 +28,6 @@ class FeedbackController extends AppController {
 		//Is ajax action
 		$this->layout='ajax';
 
-		//Do not autorender
-		$this->autoRender = false;
-
 		//Save screenshot:
 		$this->request->data['screenshot'] = str_replace('data:image/png;base64,', '', $this->request->data['screenshot']);
 
@@ -54,21 +51,25 @@ class FeedbackController extends AppController {
 			}
 
 			//Use method to save:
-			if( $msg = $this->Feedbackstore->$method($feedbackObject) ){
-					
-				if( ! is_bool($msg) ){
-					die($msg);
-				}
+			$result = $this->Feedbackstore->$method($feedbackObject);
 
-				die("Feedback saved");
-			}else{
+			if( ! $result['result'] ){			
 				$this->response->statusCode(500);
-				die("Error saving feedback");
+				
+				if( empty($result['msg']) ){
+					$result['msg'] = 'Error saving feedback.';
+				}	
+			}else{
+				if( empty($result['msg']) ){
+					$result['msg'] = 'Your feedback was saved succesfully.';
+				}
 			}
-		}
 
-		//Throw error, method required
-		throw new NotFoundException( __('No save method found in config file') );
+			$this->set('msg',$result['msg']);
+		}else{
+			//Throw error, method required
+			throw new NotFoundException( __('No save method found in config file') );
+		}	
 	}
 
 	/*

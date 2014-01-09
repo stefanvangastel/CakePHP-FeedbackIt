@@ -7,16 +7,23 @@ class Feedbackstore extends AppModel {
 
 	public $useTable = false;
 
+	public $returnobject = array();
+
 	/*
 	 * Store functions for different save methods
    	 */
 	public function filesystem($feedbackObject = null){
+
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
 		if (empty($feedbackObject)){
-			return false;
+			return $returnobject;
     	}
 
-    	//Save serialized with timestamp + randnumber as filename
-		$feedbackObject['filename'] = time() . '-' . rand(1000, 9999) . '.feedback';
+    	//Create filename based on timestamp and random number (to prevent collisions)
+		$feedbackObject['filename'] = $this->generateFilename();
 
 		if ( $this->saveFile($feedbackObject) ){
 			
@@ -30,32 +37,12 @@ class Feedbackstore extends AppModel {
 
 				$msg .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
 			}
-			
-			return $msg;
+
+			$returnobject['result'] = true;
+			$returnobject['msg'] = $msg;		
     	}
-    	return false;
-	}
 
-	/*
-   	 * Auxiliary function that saves the file 
-     */
-  	private function saveFile($feedbackObject = null)
-	{
-    	//Get save path from config
-    	$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
-    	//Serialize and save the object to a store in the Cake's tmp dir.
-    	if (!file_exists($savepath)){
-			if (!mkdir($savepath)){
-				//Throw error, directory is requird
-				throw new NotFoundException(__('Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
-			}
-		}
-
-		if (file_put_contents($savepath . $feedbackObject['filename'], serialize($feedbackObject))){
-			//Add filename to data
-			return true;
-		}
-		return false;
+    	return $returnobject;
 	}
 
 	/*
@@ -63,8 +50,12 @@ class Feedbackstore extends AppModel {
 	 */
 	public function mantis($feedbackObject = null){
 
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
 		if(empty($feedbackObject)){
-			return false;
+			return $returnobject;
 		}
 
 		//Mandatory
@@ -83,7 +74,6 @@ class Feedbackstore extends AppModel {
 			$soap_options = array(
 				'login'          => $http_username,
 				'password'       => $http_password,
-
 				);
 		} 
 
@@ -130,11 +120,13 @@ class Feedbackstore extends AppModel {
 					$msg .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
 				}
 
-				return $msg;
+				$returnobject['result'] = true;
+				$returnobject['msg'] = $msg;
+
 			}
 		}
 
-		return false;
+		return $returnobject;
 	}
 
 	/*
@@ -142,8 +134,12 @@ class Feedbackstore extends AppModel {
 	 */
 	public function mail($feedbackObject = null){
 
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
 		if(empty($feedbackObject)){
-			return false;
+			return $returnobject;
 		}
 
 		//Read settings from config
@@ -179,11 +175,15 @@ class Feedbackstore extends AppModel {
 		$feedbackObject['feedback'] .= '<img src="cid:id-screenshot">'; //Add inline screenshot
 
 		if( $email->send($feedbackObject['feedback']) ){
-			unlink($tmpfile);
-			return __('Thank you. Your feedback was saved.');
+			$returnobject['result'] = true;
+			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+
+			return $returnobject;
 		}
+
 		unlink($tmpfile);
-		return false;
+
+		return $returnobject;
 	}
 
 	/*
@@ -191,22 +191,38 @@ class Feedbackstore extends AppModel {
 	 */
 	public function github($feedbackObject = null){
 
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
 		if(empty($feedbackObject)){
-			return false;
+			return $returnobject;
 		}
 
 		//Read settings
-		$api_url	= Configure::read('FeedbackIt.methods.github.api_url');
-		$username	= Configure::read('FeedbackIt.methods.github.username');
-		$password	= Configure::read('FeedbackIt.methods.github.password');
+		$api_url			= Configure::read('FeedbackIt.methods.github.api_url');
+		$username			= Configure::read('FeedbackIt.methods.github.username');
+		$password			= Configure::read('FeedbackIt.methods.github.password');
+		$localimagestore 	= Configure::read('FeedbackIt.methods.github.localimagestore');
 
 		//Mantis specific: append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= "\n\n";
-		$feedbackObject['feedback'] .= sprintf("Browser: %s %s\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
-		$feedbackObject['feedback'] .= sprintf("Url: %s\n",$feedbackObject['url']);
-		$feedbackObject['feedback'] .= sprintf("By: %s",$feedbackObject['name']);
+		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
+		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n",$feedbackObject['url']);
+		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n",$feedbackObject['name']);
 
-		//TODO: Optional, append image (link) to this websites ../feedback_it/feedback/viewimage/xxx url or something
+		// WARNING: This may not work for sites with different domains (or dev environments)
+    	//          If the given URL is not public, Github won't display the screenshot
+		if ($localimagestore){
+			//Create filename based on timestamp and random number (to prevent collisions)
+			$feedbackObject['filename'] = $this->generateFilename();
+			$this->saveFile($feedbackObject);
+			$viewimageUrl  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'viewimage',$feedbackObject['filename']),true);
+
+			$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+		}
+		// Github still doesn't support this kind of image format in Markup Language
+		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
 
 		//Prepare data 
 		$data = array("title" => $feedbackObject['subject'], "body" => $feedbackObject['feedback']);
@@ -222,16 +238,33 @@ class Feedbackstore extends AppModel {
 		curl_setopt($ch, CURLOPT_POST, true); 
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 
-		$result = curl_exec($ch); 
+		$result 		= curl_exec($ch);
+		$curlstatuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		if( ! $result){
-			throw new InternalErrorException( curl_error($ch) );
+			//Return curl error
+			$returnobject['msg'] = curl_error($ch);
+
+		}else if($curlstatuscode >= 400){
+			//Return http error and message
+			$message = json_decode($result);
+			$returnobject['msg'] = trim($message->message); //Can contain linebreaks
+
+		}else{
+			//Set return value to true and return message
+			$returnobject['result'] = true;
+			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+
 		}
 
-		return __('Thank you. Your feedback was saved.');
+		return $returnobject;
 	}
 
 	public function bitbucket($feedbackObject = null){
+
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
 
 		if (empty($feedbackObject)){
     		return false;
@@ -251,10 +284,12 @@ class Feedbackstore extends AppModel {
 		// WARNING: This may not work for sites with different domains (or dev environments)
     	//          If the given URL is not public, Bitbucket won't display the screenshot
 		if ($localimagestore){
-			$newFeedbackObject = $this->saveFile($feedbackObject);
-			$viewimageUrl  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'viewimage',$newFeedbackObject['filename']),true);
+			//Create filename based on timestamp and random number (to prevent collisions)
+			$feedbackObject['filename'] = $this->generateFilename();
+			$this->saveFile($feedbackObject);
+			$viewimageUrl  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'viewimage',$feedbackObject['filename']),true);
 
-			$feedbackObject['feedback'] .= sprintf("**Screenshot**: ![screenshot](%s)\n\n", $viewimageUrl);
+			$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
 		}
 		// Bitbucket still doesn't support this kind of image format in Markup Language
 		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
@@ -268,12 +303,43 @@ class Feedbackstore extends AppModel {
     	$result = $HttpSocket->post($api_url, $data);
 
     	// TODO: A better error management
-    	if (!$result)
-    	{
-    	  throw new InternalErrorException($HttpSocket->lastError());
-    	}
+    	if( ! $result){
+			$returnobject['msg'] = $HttpSocket->lastError();
+		}else{
+			$returnobject['result'] = true;
+			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+		}
 
-		return true;
+		return $returnobject;
+	}
+
+	/*
+   	 * Auxiliary function that saves the file 
+     */
+  	private function saveFile($feedbackObject = null)
+	{
+    	//Get save path from config
+    	$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
+    	//Serialize and save the object to a store in the Cake's tmp dir.
+    	if (!file_exists($savepath)){
+			if (!mkdir($savepath)){
+				//Throw error, directory is requird
+				throw new NotFoundException(__('Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
+			}
+		}
+
+		if (file_put_contents($savepath . $feedbackObject['filename'], serialize($feedbackObject))){
+			//Add filename to data
+			return true;
+		}
+		return false;
+	}
+
+	/*
+   	 * Auxiliary function that creates filename 
+     */
+	private function generateFilename(){
+		return time() . '-' . rand(1000, 9999) . '.feedback';
 	}
 
 }

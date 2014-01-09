@@ -64,6 +64,11 @@ $(document).ready(function(){
 		        },
 		        error: function(jqXHR, textStatus, errorThrown) 
 		        {
+		        	//Check for error messages
+		        	if(jqXHR.responseText != ''){
+		        		errorMessage = jqXHR.responseText;
+		        	}
+
 		        	/*
 		        	Only use modal if TwitterBootstrap Javascript is loaded
 		        	 */

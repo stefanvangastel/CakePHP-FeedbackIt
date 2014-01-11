@@ -215,11 +215,11 @@ class Feedbackstore extends AppModel {
     	//          If the given URL is not public, Github won't display the screenshot
 		if ($localimagestore){
 			//Create filename based on timestamp and random number (to prevent collisions)
-			$feedbackObject['filename'] = $this->generateFilename();
-			$this->saveFile($feedbackObject);
-			$viewimageUrl  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'viewimage',$feedbackObject['filename']),true);
+			if( $imagename = $this->saveScreenshot($feedbackObject) ){
+				$viewimageUrl  = Router::url("/feedback_it/img/screenshots/$imagename",true);
 
-			$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+				$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+			}
 		}
 		// Github still doesn't support this kind of image format in Markup Language
 		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
@@ -271,10 +271,10 @@ class Feedbackstore extends AppModel {
     	}
 
     	//Read settings
-    	$api_url = Configure::read('FeedbackIt.methods.bitbucket.api_url');
-    	$username = Configure::read('FeedbackIt.methods.bitbucket.username');
-    	$password = Configure::read('FeedbackIt.methods.bitbucket.password');
-    	$localimagestore = Configure::read('FeedbackIt.methods.bitbucket.localimagestore');
+    	$api_url			= Configure::read('FeedbackIt.methods.bitbucket.api_url');
+    	$username 			= Configure::read('FeedbackIt.methods.bitbucket.username');
+    	$password 			= Configure::read('FeedbackIt.methods.bitbucket.password');
+    	$localimagestore 	= Configure::read('FeedbackIt.methods.bitbucket.localimagestore');
 
 		//Append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n", $feedbackObject['name']);
@@ -285,11 +285,11 @@ class Feedbackstore extends AppModel {
     	//          If the given URL is not public, Bitbucket won't display the screenshot
 		if ($localimagestore){
 			//Create filename based on timestamp and random number (to prevent collisions)
-			$feedbackObject['filename'] = $this->generateFilename();
-			$this->saveFile($feedbackObject);
-			$viewimageUrl  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'viewimage',$feedbackObject['filename']),true);
+			if( $imagename = $this->saveScreenshot($feedbackObject) ){
+				$viewimageUrl  = Router::url("/feedback_it/img/screenshots/$imagename",true);
 
-			$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+				$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+			}
 		}
 		// Bitbucket still doesn't support this kind of image format in Markup Language
 		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
@@ -316,8 +316,7 @@ class Feedbackstore extends AppModel {
 	/*
    	 * Auxiliary function that saves the file 
      */
-  	private function saveFile($feedbackObject = null)
-	{
+  	private function saveFile($feedbackObject = null){
     	//Get save path from config
     	$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
     	//Serialize and save the object to a store in the Cake's tmp dir.
@@ -340,6 +339,38 @@ class Feedbackstore extends AppModel {
      */
 	private function generateFilename(){
 		return time() . '-' . rand(1000, 9999) . '.feedback';
+	}
+
+	/*
+   	 * Auxiliary function that creates screenshotname 
+     */
+	private function generateScreenshotname(){
+		return time() . '-' . rand(1000, 9999) . '.png';
+	}
+
+
+	/*
+   	 * Auxiliary function that save screenshot as image in webroot 
+     */
+  	private function saveScreenshot($feedbackObject = null){
+    	//Get save path from config
+    	$savepath = APP.'Plugin'.DS.'FeedbackIt'.DS.'webroot'.DS.'img'.DS.'screenshots'.DS;
+    	
+    	//Serialize and save the object to a store in the Cake's tmp dir.
+    	if (!file_exists($savepath)){
+			if (!mkdir($savepath)){
+				//Throw error, directory is requird
+				throw new NotFoundException(__('Could not create directory to save screenshots in. Please provide write rights to webserver user on directory: ') . $savepath);
+			}
+		}
+
+		$screenshotname = $this->generateScreenshotname();
+
+		if (file_put_contents($savepath . $screenshotname, base64_decode($feedbackObject['screenshot']))){
+			//Return the screenshotname
+			return $screenshotname;
+		}
+		return false;
 	}
 
 }

@@ -55,6 +55,7 @@ $(document).ready(function(){
 		        	Only use modal if TwitterBootstrap Javascript is loaded
 		        	 */
 		        	if( $.isFunction( $.fn.modal ) ){
+		        		$('#feedbackit-modal .modal-title').html('Feedback submitted');
 		        		$('#feedbackit-modal .modal-body').html(message);
 		            	$('#feedbackit-modal').modal('show');
 		        	}else{

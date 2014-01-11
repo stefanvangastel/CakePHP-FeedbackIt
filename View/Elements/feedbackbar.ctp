@@ -15,6 +15,10 @@ echo $this->Html->script(
 	);
 ?>
 
+<script>
+//Create URL using cake's url helper, this is used in feedbackit-functions.js
+window.formURL = '<?php echo $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"savefeedback"),true); ?>';
+</script>
 
 <div id="feedbackit-slideout">
   <?php echo $this->Html->image('FeedbackIt.feedback.png');?>
@@ -95,8 +99,3 @@ echo $this->Html->script(
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-<script>
-//Create URL using cake's url helper, this is used in feedbackit-functions.js
-window.formURL = '<?php echo $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"savefeedback"),true); ?>';
-</script>

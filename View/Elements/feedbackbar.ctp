@@ -33,9 +33,14 @@ if( file_exists($configfile) AND is_readable($configfile) ){
     $forceauthusername	= Configure::read('FeedbackIt.forceauthusername');
     $forceemail	        = Configure::read('FeedbackIt.forceemail');
 
-    //Assemble optional vars
-    $username = AuthComponent::user('name') ?: AuthComponent::user('username') ?: AuthComponent::user('account') ?: '';
-    $email = AuthComponent::user('mail') ?: AuthComponent::user('email') ?: '';
+    //Assemble optional vars if AuthComponent is loaded
+    $username   = '';
+    $email      = '';
+
+    if( method_exists('AuthComponent','user') ){ 
+        $username = AuthComponent::user('name') ?: AuthComponent::user('username') ?: AuthComponent::user('account') ?: '';
+        $email = AuthComponent::user('mail') ?: AuthComponent::user('email') ?: '';
+    }
 }
 ?>
 

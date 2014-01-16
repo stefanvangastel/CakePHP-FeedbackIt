@@ -4,6 +4,8 @@ $config = array(
 	'FeedbackIt' => array(
 		'method' => 'filesystem',	//Options: filesystem, mantis, mail, github
 		'returnlink' => true,	//Return a link (if any) to the created ticket or report.
+		'forceauthusername' => false, //If set to true, the AuthComponent::user('name') var or equivalent is made un-editable in the form
+		'forceemail' => true, //If set to true, the AuthComponent::user('email') var or equivalent is made un-editable in the form
 
 		/*
 		Configure the different methods
@@ -28,7 +30,7 @@ $config = array(
 	    	
 	        'mail' => array(
 	        	'to'=> 'foo@example.com',
-	        	'from'=> array('bar@example.com'=>'Bar is my name'),
+	        	'from'=> array('noreply@'.$_SERVER['HTTP_HOST'] => 'FeedbackIt mailer'),
 	    	),
 
 	        'github' => array(

@@ -87,6 +87,7 @@ class Feedbackstore extends AppModel {
 		$feedbackObject['feedback'] .= "\n\n";
 		$feedbackObject['feedback'] .= sprintf("Browser: %s %s\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
 		$feedbackObject['feedback'] .= sprintf("Url: %s\n",$feedbackObject['url']);
+        $feedbackObject['feedback'] .= sprintf("OS: %s\n",$feedbackObject['os']);
 		$feedbackObject['feedback'] .= sprintf("By: %s",$feedbackObject['name']);
 
 	    //Create new issue
@@ -131,8 +132,9 @@ class Feedbackstore extends AppModel {
 
 	/*
 	Mail function
+	- Function has possibility to mail submitting user instead of target adress
 	 */
-	public function mail($feedbackObject = null){
+	public function mail($feedbackObject = null,$copyreporter = false){
 
 		//Standard return value
 		$returnobject['result'] = false;
@@ -142,9 +144,19 @@ class Feedbackstore extends AppModel {
 			return $returnobject;
 		}
 
-		//Read settings from config
-		$to	= Configure::read('FeedbackIt.methods.mail.to');
+		//Read settings from config if not in copy mode
+		$to	    = Configure::read('FeedbackIt.methods.mail.to');
 		$from	= Configure::read('FeedbackIt.methods.mail.from');
+
+        // Change recipient if sending a copy
+        if($copyreporter){
+            $to   = $feedbackObject['email'];
+        }
+
+        //Change the sender if any given
+        if(!empty($feedbackObject['email']) AND !empty($feedbackObject['name'])){
+            $from	= array($feedbackObject['email'] => $feedbackObject['name']);
+        }
 
 		//Tmp store the screenshot:
 		$tmpfile = APP.'tmp'.DS.time().'_'.rand(1000,9999).'.png';
@@ -166,11 +178,16 @@ class Feedbackstore extends AppModel {
 		    )
 		));
 
-		//Mail specific: append browser, browser version and URL to feedback:
+		//Mail specific: append browser, browser version, URL, etc to feedback :
+        if($copyreporter){
+            $feedbackObject['feedback'] = '<p>A copy of your submitted feedback:</p>' . $feedbackObject['feedback'];
+        }
 		$feedbackObject['feedback'] .= "<p>";
 		$feedbackObject['feedback'] .= sprintf("Browser: %s %s<br />",$feedbackObject['browser'],$feedbackObject['browser_version']);
 		$feedbackObject['feedback'] .= sprintf("Url: %s<br />",$feedbackObject['url']);
+        $feedbackObject['feedback'] .= sprintf("OS: %s<br />",$feedbackObject['os']);
 		$feedbackObject['feedback'] .= sprintf("By: %s<br />",$feedbackObject['name']);
+        $feedbackObject['feedback'] .= "Screenshot: <br />";
 		$feedbackObject['feedback'] .= "</p>";
 		$feedbackObject['feedback'] .= '<img src="cid:id-screenshot">'; //Add inline screenshot
 
@@ -187,7 +204,7 @@ class Feedbackstore extends AppModel {
 	}
 
 	/*
-	Github API v3 NO IMAGE SUPPORT YET
+	Github API v3
 	 */
 	public function github($feedbackObject = null){
 
@@ -209,6 +226,7 @@ class Feedbackstore extends AppModel {
 		$feedbackObject['feedback'] .= "\n\n";
 		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
 		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n",$feedbackObject['url']);
+        $feedbackObject['feedback'] .= sprintf("**OS**: %s\n\n",$feedbackObject['os']);
 		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n",$feedbackObject['name']);
 
 		// WARNING: This may not work for sites with different domains (or dev environments)
@@ -260,6 +278,9 @@ class Feedbackstore extends AppModel {
 		return $returnobject;
 	}
 
+    /*
+	Bitbucket API
+	 */
 	public function bitbucket($feedbackObject = null){
 
 		//Standard return value
@@ -279,7 +300,8 @@ class Feedbackstore extends AppModel {
 		//Append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n", $feedbackObject['name']);
 		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n", $feedbackObject['browser'], $feedbackObject['browser_version']);
-		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n", $feedbackObject['url']);    
+        $feedbackObject['feedback'] .= sprintf("**OS**: %s\n\n",$feedbackObject['os']);
+		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n", $feedbackObject['url']);
     
 		// WARNING: This may not work for sites with different domains (or dev environments)
     	//          If the given URL is not public, Bitbucket won't display the screenshot

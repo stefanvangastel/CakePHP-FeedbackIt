@@ -1,6 +1,8 @@
+/* Feedback bar container */
+
 #feedbackit-slideout {
   position: fixed;
-  top: 100px;
+  top: 25%;
   right: 0;
   width: 35px;
   padding: 12px 0;
@@ -15,43 +17,50 @@
   border-radius:5px 0 0 5px;
   display:none;
 }
-#feedbackit-slideout:hover {
-  cursor:pointer;
-}
-#feedbackit-slideout_inner {
-  position: fixed;
-  top: 100px;
-  right: -250px;
-  background: #a8cad2;
-  width: 250px !important;
- /* padding: 15px;*/
-  height: 380px;
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  text-align: left;
-  -webkit-border-radius: 0 0 0 5px;
-  -moz-border-radius: 0 0 0 5px;
-  border-radius: 0 0 0 5px;
-}
+
+    #feedbackit-slideout:hover {
+      cursor:pointer;
+    }
+
+    #feedbackit-slideout_inner {
+      position: fixed;
+      top: 25%;
+      right: -250px;
+      background: #a8cad2;
+      width: 250px !important;
+     /* padding: 15px;*/
+     /* height: 380px;*/
+      -webkit-transition-duration: 0.3s;
+      -moz-transition-duration: 0.3s;
+      -o-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      text-align: left;
+      -webkit-border-radius: 0 0 0 5px;
+      -moz-border-radius: 0 0 0 5px;
+      border-radius: 0 0 0 5px;
+    }
+
+    .feedbackit-slideout_outer {
+        right: 250px !important;
+    }
+
+    .feedbackit-slideout_inner {
+        right: 0 !important;
+    }
+
+/* Feedback bar form and formelements */
 
 .feedbackit-form-elements{
   padding:15px;
 }
 
-/* @kieranbarnes overwrite form-group 15px margin-bottom */
-#feedbackit-slideout_inner div.form-group {
+
+#feedbackit-slideout_inner div.form-group { /* @kieranbarnes overwrite form-group 15px margin-bottom */
 	margin-bottom: 6px;
 }
 
-.feedbackit-slideout_outer {
-  right: 250px !important;
-}
 
-.feedbackit-slideout_inner {
-  right: 0 !important;
-}
+/* Feedback highlight image and its holder */
 
 #feedbackit-highlight-holder{
   position:absolute;
@@ -60,11 +69,13 @@
   height: 150px;
 }
 
-#feedbackit-highlight-holder img{
-  width:150px;
-  height: 150px;
-  opacity:0.5;
-}
+    #feedbackit-highlight-holder img{
+      width:150px;
+      height: 150px;
+      opacity:0.5;
+    }
+
+/* Feedback images in filesystem stored display */
 
 .feedbackit-small-img{
   max-width: 256px;

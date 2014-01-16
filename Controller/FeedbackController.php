@@ -1,4 +1,7 @@
 <?php
+/**
+ * Class FeedbackController
+ */
 class FeedbackController extends AppController {
 	
 	public $uses = array('FeedbackIt.Feedbackstore');
@@ -66,6 +69,11 @@ class FeedbackController extends AppController {
 			}
 
 			$this->set('msg',$result['msg']);
+
+            //Send a copy to the reciever:
+           if(!empty($feedbackObject['copyme'])){
+               $this->Feedbackstore->mail($feedbackObject,true);
+           }
 		}else{
 			//Throw error, method required
 			throw new NotFoundException( __('No save method found in config file') );
@@ -79,7 +87,7 @@ class FeedbackController extends AppController {
 
 		if(Configure::read('FeedbackIt.method') != 'filesystem'){
 			$this->Session->setFlash(__('This function is only available with filesystem save method'));
-			$this->redirect($this->referrer());
+			$this->redirect($this->referer());
 		}
 
 		//Find all files in feedbackit dir
@@ -129,4 +137,3 @@ class FeedbackController extends AppController {
 		$this->layout = 'ajax';
 	}
 }
-?> 

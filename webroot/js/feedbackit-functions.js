@@ -3,13 +3,16 @@ $(document).ready(function(){
 	var confirmMessage = 'Your feedback was submitted succesfully.';
 	var errorMessage   = 'There was an error submitting your feedback. Please try again later.';
 
+    //Slider object
+    var slider = $('#feedbackit-slideout,#feedbackit-slideout_inner');
+
 	/*
 	Hide all on IE < 9 OR Firefox <= 3.5
 	*/
 	if( (get_browser() == 'MSIE' && get_browser_version() <= 9) || (get_browser() == 'Firefox' && get_browser_version() <= 3.5)){
-		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'none');
-	}else{
-		$( "#feedbackit-slideout, #feedbackit-slideout_inner" ).css( "display", 'block');
+        slider.css( "display", 'none');
+    }else{
+        slider.css( "display", 'block');
 	}
 
 	/*
@@ -18,7 +21,7 @@ $(document).ready(function(){
 	$('#feedbackit-form').submit(function(e){
 
 		//Hide feedback slider
-		$('#feedbackit-slideout,#feedbackit-slideout_inner').hide();
+        slider.hide();
 
 		html2canvas(document.body, {
 		  onrendered: function(canvas) {
@@ -41,6 +44,13 @@ $(document).ready(function(){
 		    //Add browser version
 		    postData.push({name:'browser_version',value:get_browser_version()});
 
+            //Add OS Flavor
+            postData.push({name:'os',value:get_os_flavor()});
+
+            //Select elements:
+            var modaltitle = $('#feedbackit-modal .modal-title');
+            var modalbody  = $('#feedbackit-modal .modal-body');
+
 		    //Ajax call to controller to save this feedback report
 		    $.ajax(
 		    {
@@ -55,8 +65,8 @@ $(document).ready(function(){
 		        	Only use modal if TwitterBootstrap Javascript is loaded
 		        	 */
 		        	if( $.isFunction( $.fn.modal ) ){
-		        		$('#feedbackit-modal .modal-title').html('Feedback submitted');
-		        		$('#feedbackit-modal .modal-body').html(message);
+                        modaltitle.html('Feedback submitted');
+                        modalbody.html(message);
 		            	$('#feedbackit-modal').modal('show');
 		        	}else{
 		        		alert(confirmMessage);
@@ -74,8 +84,8 @@ $(document).ready(function(){
 		        	Only use modal if TwitterBootstrap Javascript is loaded
 		        	 */
 		        	if( $.isFunction( $.fn.modal ) ){
-		        		$('#feedbackit-modal .modal-title').html('Error');
-		        		$('#feedbackit-modal .modal-body').html(errorMessage);
+                        modaltitle.html('Error');
+                        modalbody.html(errorMessage);
 		            	$('#feedbackit-modal').modal('show');
 		        	}else{
 		        		alert(errorMessage);
@@ -84,7 +94,7 @@ $(document).ready(function(){
 		    });
 		    
 		    //Show it again
-		    $('#feedbackit-slideout,#feedbackit-slideout_inner').show();
+              slider.show();
 		  }
 		});
 
@@ -108,6 +118,9 @@ $(document).ready(function(){
 				console.log(err.message + ' This requires TwitterBootstrap js to be loaded.');
 			}
 
+            //Change cursor:
+            $( "body" ).css( "cursor", 'crosshair');
+
 	        $(this).dequeue();
 
 	    }).delay(250).queue(function() {
@@ -115,7 +128,7 @@ $(document).ready(function(){
 	        /*
 			Highlight function
 			 */
-			$('body').click(function(e){
+			$('body').mousedown(function(e){
 				// capture the mouse position
 			    var posx = 0;
 			    var posy = 0;
@@ -132,9 +145,10 @@ $(document).ready(function(){
 			    }
 			 
 			 	//Set position, to exactly center substract half the width and height from the x and y position
-				$( "#feedbackit-highlight-holder" ).css( "left", posx - 75);
-			    $( "#feedbackit-highlight-holder" ).css( "top", posy - 75);
-				$( "#feedbackit-highlight-holder" ).fadeIn();
+                var highlightholder = $( "#feedbackit-highlight-holder" );
+                highlightholder.css( "left", posx - 75);
+                highlightholder.css( "top", posy - 75);
+                highlightholder.fadeIn();
 
 				//Reset highlight button
 				try{
@@ -143,8 +157,11 @@ $(document).ready(function(){
 					console.log(err.message + ' This requires TwitterBootstrap js to be loaded.');
 				}
 
+                //Reset cursor:
+                $( "body" ).css( "cursor", 'default');
+
 				//Unbind click function
-				$('body').off('click');
+				$('body').off('mousedown');
 
 				e.preventDefault();
 			});
@@ -155,20 +172,41 @@ $(document).ready(function(){
 	});
 
 	/*
-	Checkbox
+	Confirm terms checkbox changed
 	 */
 	$('#feedbackit-okay').change(function(){
-		
+
+        var submitbutton = $("#feedbackit-submit");
+
 		if( $(this).is(':checked') ){
 			//Enable button
-			$("#feedbackit-submit").removeAttr("disabled");  
+            submitbutton.removeAttr("disabled");
 			return;
 		}
 
 		//Disable button
-		$("#feedbackit-submit").attr("disabled", "disabled");
-		return;
+        submitbutton.attr("disabled", "disabled");
 	});
+
+    /*
+     Confirm send copy checkbox changed
+     */
+    $('#feedbackit-copyme').change(function(){
+
+        var emailfield = $("#feedbackit-email");
+        var namefield = $("#feedbackit-name");
+
+        if( $(this).is(':checked') ){
+            //Add required attribute
+            emailfield.attr("required", "required");
+            namefield.attr("required", "required");
+            return;
+        }
+
+        //Remove required attribute
+        emailfield.removeAttr("required");
+        namefield.removeAttr("required");
+    });
 
 	/*
 	Detect browser
@@ -190,6 +228,27 @@ $(document).ready(function(){
 	    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
 	    M=M? [M[1], M[2]]: [N, navigator.appVersion, '-?'];
 	    return M[1];
+    }
+
+    /*
+    Detect OS flavor
+     */
+    function get_os_flavor(){
+
+        // This script sets OSName variable as follows:
+        // "Windows"    for all versions of Windows
+        // "MacOS"      for all versions of Macintosh OS
+        // "Linux"      for all versions of Linux
+        // "Unix"       for all other Unix flavors
+        // "Unknown OS" indicates failure to detect the OS
+
+        var OSName="Unknown OS";
+        if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
+        if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+        if (navigator.appVersion.indexOf("X11")!=-1) OSName="Unix";
+        if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+
+        return OSName;
     }
 
     /*
@@ -215,9 +274,11 @@ $(document).ready(function(){
 		//Close menu 
       	$("#feedbackit-slideout").removeClass("feedbackit-slideout_outer");
       	$("#feedbackit-slideout_inner").removeClass("feedbackit-slideout_inner"); 
+
       	//Reset fields
       	$('.feedbackit-input').val(''); //Reset
       	$('#feedbackit-okay').attr('checked', false);
+        $('#feedbackit-copyme').attr('checked', false);
       	$("#feedbackit-submit").attr("disabled", "disabled");
 		$("#feedbackit-highlight-holder").fadeOut();
 	}

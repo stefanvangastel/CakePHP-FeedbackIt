@@ -28,6 +28,7 @@ $configfile = APP.'Plugin'.DS.'FeedbackIt'.DS.'Config'.DS.'feedbackit-config.php
 $forceauthusername	= false;
 $forceemail	        = false;
 $enablecopybyemail	= false;
+$enableacceptterms	= false;
 $username           = '';
 $email              = '';
 
@@ -38,8 +39,10 @@ if( file_exists($configfile) AND is_readable($configfile) ){
 
     //Get config vars used in this view
     $forceauthusername	= Configure::read('FeedbackIt.forceauthusername');
-    $enablecopybyemail	= Configure::read('FeedbackIt.enablecopybyemail');
     $forceemail	        = Configure::read('FeedbackIt.forceemail');
+
+    $enablecopybyemail	= Configure::read('FeedbackIt.enablecopybyemail');
+    $enableacceptterms	= Configure::read('FeedbackIt.enableacceptterms');
 
     //Assemble optional vars if AuthComponent is loaded
     if( method_exists('AuthComponent','user') ){
@@ -108,9 +111,16 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                         <i class="icon-screenshot icon-white"></i><span class="glyphicon glyphicon-screenshot"></span> <?php echo __('Highlight something'); ?>
                     </button>
                 </p>
-                <p>
+                <p <?php if( ! $enableacceptterms) echo 'style="display:none;"'; ?>>
                     <label class="checkbox">
-                        <input type="checkbox" required id="feedbackit-okay">
+                        <input type="checkbox"
+                               required id="feedbackit-okay"
+                                <?php
+                                if( ! $enableacceptterms){
+                                   echo 'checked="checked"';
+                                }
+                                ?>
+                            >
                         I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo __('When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.');?>">this</a></b>.
                     </label>
                 </p>
@@ -119,7 +129,7 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                 ?>
                 <p>
                     <label class="checkbox">
-                        <input type="checkbox" name="copyme" id="feedbackit-copyme">
+                        <input type="checkbox" name="copyme" id="feedbackit-copyme" >
                         E-mail me a copy
                     </label>
                 </p>

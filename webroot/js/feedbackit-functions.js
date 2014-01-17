@@ -175,17 +175,8 @@ $(document).ready(function(){
 	Confirm terms checkbox changed
 	 */
 	$('#feedbackit-okay').change(function(){
-
-        var submitbutton = $("#feedbackit-submit");
-
-		if( $(this).is(':checked') ){
-			//Enable button
-            submitbutton.removeAttr("disabled");
-			return;
-		}
-
-		//Disable button
-        submitbutton.attr("disabled", "disabled");
+        //Run the update submit button code
+        updateSubmitButton();
 	});
 
     /*
@@ -283,10 +274,30 @@ $(document).ready(function(){
 		$("#feedbackit-highlight-holder").fadeOut();
 	}
 
+    /*
+    Function to update the submit button (based on terms checkbox)
+     */
+    function updateSubmitButton(){
+
+        var submitbutton = $("#feedbackit-submit");
+
+        if( $('#feedbackit-okay').is(':checked') ){
+            //Enable button
+            submitbutton.removeAttr("disabled");
+            return;
+        }
+
+        //Disable button
+        submitbutton.attr("disabled", "disabled");
+    }
+
 	/*
 	Activate tooltip for screenshot approval
 	 */
 	if( $.isFunction( $.fn.modal ) ){ //This is still quite dirty. For some reason the tooltip function is always loaded, even if not the TB tooltip. So we check for modal which is TB only
 		$('#feedbackit-okay-message').tooltip();
 	}
+
+    //Run update submit button to set starting state (Based on terms checkbox state)
+    updateSubmitButton();
 });

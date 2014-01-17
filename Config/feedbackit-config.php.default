@@ -2,11 +2,12 @@
 
 $config = array(
 	'FeedbackIt' => array(
-		'method' => 'filesystem',	//Options: filesystem, mantis, mail, github
-		'returnlink' => true,	//Return a link (if any) to the created ticket or report.
+		'method'            => 'filesystem',	//Options: filesystem, mantis, mail, github
+		'returnlink'        => true,	//Return a link (if any) to the created ticket or report.
 		'enablecopybyemail' => true, //If set to true, visitors can check a 'send me a copy' button
+		'enableacceptterms' => true, //If set to true, visitors have to check an accept terms checkbox
 		'forceauthusername' => false, //If set to true, the AuthComponent::user('name') var or equivalent is made un-editable in the form
-		'forceemail' => true, //If set to true, the AuthComponent::user('email') var or equivalent is made un-editable in the form
+		'forceemail'        => true, //If set to true, the AuthComponent::user('email') var or equivalent is made un-editable in the form
 
 		/*
 		Configure the different methods

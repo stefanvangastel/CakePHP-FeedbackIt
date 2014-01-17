@@ -117,7 +117,10 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                                required id="feedbackit-okay"
                                 <?php
                                 if( ! $enableacceptterms){
+                                   echo 'class="isinvisible"';
                                    echo 'checked="checked"';
+                                }else{
+                                   echo 'class="isvisible"';
                                 }
                                 ?>
                             >

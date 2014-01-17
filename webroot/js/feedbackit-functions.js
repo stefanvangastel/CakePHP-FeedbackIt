@@ -268,9 +268,9 @@ $(document).ready(function(){
 
       	//Reset fields
       	$('.feedbackit-input').val(''); //Reset
-      	$('#feedbackit-okay').attr('checked', false);
+      	$('#feedbackit-okay.isvisible').attr('checked', false);
         $('#feedbackit-copyme').attr('checked', false);
-      	$("#feedbackit-submit").attr("disabled", "disabled");
+        updateSubmitButton();
 		$("#feedbackit-highlight-holder").fadeOut();
 	}
 

@@ -2,7 +2,8 @@
 * [Intro](#intro)  
 * [Requirements](#requirements)  
 * [Installation and setup](#installation)  
-* [Usage](#usage)  
+* [Usage](#usage) 
+* [Demo](#demo)   
 * [Examples](#examples)  
 
 <a name="intro"/>
@@ -77,6 +78,10 @@ Features pure client-side screenshot function including user-placed highlight / 
 ## Usage
 
 Example controller and view are included!
+
+<a name="demo"/>
+## Demo
+A demo and some more info is available on [http://stefanvangastel.nl/feedbackitdemo/](http://stefanvangastel.nl/feedbackitdemo)
 
 <a name="examples"/>
 ## Examples

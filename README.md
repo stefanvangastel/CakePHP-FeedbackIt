@@ -11,7 +11,7 @@
 This CakePHP plugin provides a static feedback tab on the side of the screen that enables website visitor to submit feedback or bugreports.
 Features pure client-side screenshot function including user-placed highlight / accent.
 
-Currently saves the following on form submit:
+**Currently saves the following on form submit:**
 
 * Name of sender (optional, can work with AuthComponent)
 * E-mail of sender (optional)
@@ -23,7 +23,7 @@ Currently saves the following on form submit:
 * User OS flavor
 
 <a name="saveoptions"/>
-Save options include (configurable):
+**Save options include (configurable):**
 
 * Filesystem
 * [Mantis Bugtracker](http://www.mantisbt.org/)

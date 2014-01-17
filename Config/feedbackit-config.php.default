@@ -2,6 +2,7 @@
 
 $config = array(
 	'FeedbackIt' => array(
+
 		'method'            => 'filesystem',	//Options: filesystem, mantis, mail, github
 		'returnlink'        => true,	//Return a link (if any) to the created ticket or report.
 		'enablecopybyemail' => true, //If set to true, visitors can check a 'send me a copy' button

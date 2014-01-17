@@ -24,6 +24,13 @@ echo $this->Html->script(
 //Config file location (if you use it)
 $configfile = APP.'Plugin'.DS.'FeedbackIt'.DS.'Config'.DS.'feedbackit-config.php';
 
+//Defaults
+$forceauthusername	= false;
+$forceemail	        = false;
+$enablecopybyemail	= false;
+$username           = '';
+$email              = '';
+
 //Check if a config file exists:
 if( file_exists($configfile) AND is_readable($configfile) ){
     //Load config file into CakePHP config
@@ -31,13 +38,11 @@ if( file_exists($configfile) AND is_readable($configfile) ){
 
     //Get config vars used in this view
     $forceauthusername	= Configure::read('FeedbackIt.forceauthusername');
+    $enablecopybyemail	= Configure::read('FeedbackIt.enablecopybyemail');
     $forceemail	        = Configure::read('FeedbackIt.forceemail');
 
     //Assemble optional vars if AuthComponent is loaded
-    $username   = '';
-    $email      = '';
-
-    if( method_exists('AuthComponent','user') ){ 
+    if( method_exists('AuthComponent','user') ){
         $username = AuthComponent::user('name') ?: AuthComponent::user('username') ?: AuthComponent::user('account') ?: '';
         $email = AuthComponent::user('mail') ?: AuthComponent::user('email') ?: '';
     }
@@ -109,12 +114,18 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                         I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo __('When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.');?>">this</a></b>.
                     </label>
                 </p>
+                <?php
+                if($enablecopybyemail){
+                ?>
                 <p>
                     <label class="checkbox">
                         <input type="checkbox" name="copyme" id="feedbackit-copyme">
                         E-mail me a copy
                     </label>
                 </p>
+                <?php
+                }
+                ?>
                 <p>
                 <div class="btn-group">
                     <button class="btn btn-success" id="feedbackit-submit" disabled="disabled" type="submit"><i class="icon-envelope icon-white"></i><span class="glyphicon glyphicon-envelope"></span> <?php echo __('Submit'); ?></button>

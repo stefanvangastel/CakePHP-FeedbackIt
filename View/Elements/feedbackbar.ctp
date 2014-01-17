@@ -31,6 +31,7 @@ $enablecopybyemail	= false;
 $enableacceptterms	= false;
 $username           = '';
 $email              = '';
+$termstext          = '';
 
 //Check if a config file exists:
 if( file_exists($configfile) AND is_readable($configfile) ){
@@ -42,7 +43,9 @@ if( file_exists($configfile) AND is_readable($configfile) ){
     $forceemail	        = Configure::read('FeedbackIt.forceemail');
 
     $enablecopybyemail	= Configure::read('FeedbackIt.enablecopybyemail');
+
     $enableacceptterms	= Configure::read('FeedbackIt.enableacceptterms');
+    $termstext	        = Configure::read('FeedbackIt.termstext');
 
     //Assemble optional vars if AuthComponent is loaded
     if( method_exists('AuthComponent','user') ){
@@ -124,7 +127,7 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                                 }
                                 ?>
                             >
-                        I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo __('When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.');?>">this</a></b>.
+                        I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo $termstext;?>">this</a></b>.
                     </label>
                 </p>
                 <?php

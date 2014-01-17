@@ -5,7 +5,10 @@ $config = array(
 		'method'            => 'filesystem',	//Options: filesystem, mantis, mail, github
 		'returnlink'        => true,	//Return a link (if any) to the created ticket or report.
 		'enablecopybyemail' => true, //If set to true, visitors can check a 'send me a copy' button
+
 		'enableacceptterms' => true, //If set to true, visitors have to check an accept terms checkbox
+		'termstext'         => 'When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.', //The text to display on the terms button
+
 		'forceauthusername' => false, //If set to true, the AuthComponent::user('name') var or equivalent is made un-editable in the form
 		'forceemail'        => true, //If set to true, the AuthComponent::user('email') var or equivalent is made un-editable in the form
 

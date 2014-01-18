@@ -48,7 +48,7 @@ if( file_exists($configfile) AND is_readable($configfile) ){
     $termstext	        = Configure::read('FeedbackIt.termstext');
 
     //Assemble optional vars if AuthComponent is loaded
-    if( method_exists('AuthComponent','user') ){
+    if( class_exists('AuthComponent','user') ){
         $username = AuthComponent::user('name') ?: AuthComponent::user('username') ?: AuthComponent::user('account') ?: '';
         $email = AuthComponent::user('mail') ?: AuthComponent::user('email') ?: '';
     }

@@ -2,7 +2,7 @@
 * [Intro](#intro)  
 * [Requirements](#requirements)  
 * [Installation and setup](#installation)  
-* [Usage](#usage) 
+* [Usage / Demo](#usage) 
 * [Examples](#examples)  
 
 <a name="intro"/>
@@ -76,7 +76,7 @@ Features pure client-side screenshot function including user-placed highlight / 
 <a name="usage"/>
 ## Usage
 
-Example controller and view are included!
+To testdrive this puppy; [http://stefanvangastel.nl/feedbackitdemo/](http://stefanvangastel.nl/feedbackitdemo) 
 
 <a name="examples"/>
 ## Examples

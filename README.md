@@ -36,6 +36,8 @@ Features pure client-side screenshot function including user-placed highlight / 
 <a name="requirements"/>
 ## Requirements
 
+This plugin is CakePHP Security component compatible.
+
 **Required:**
 
 * [jQuery](http://jquery.com/)

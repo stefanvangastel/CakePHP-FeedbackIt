@@ -7,7 +7,12 @@ class FeedbackController extends AppController {
 	public $uses = array('FeedbackIt.Feedbackstore');
 
 	public function beforeFilter(){
-		parent::beforeFilter();
+
+		//Check security component loaded and disable it for this plugin:
+		if(isset($this->Security)){
+			$this->Security->csrfCheck = false;
+			$this->Security->validatePost = false;	
+		}
 
 		//Config file location (if you use it)
 		$configfile = APP.'Plugin'.DS.'FeedbackIt'.DS.'Config'.DS.'feedbackit-config.php';

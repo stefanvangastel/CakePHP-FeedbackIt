@@ -112,7 +112,7 @@ class Feedbackstore extends AppModel {
 				$msg = __('Thank you. Your feedback was saved.');
 
 				if( Configure::read('FeedbackIt.returnlink') ){
-					$msg .= ' ';
+					$msg .= '<br />';
 					$msg .= __('View your feedback on: ');
 					
 					list($url,$tmp) = explode('api',$api_url );

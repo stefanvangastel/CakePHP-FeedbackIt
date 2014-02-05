@@ -24,7 +24,7 @@ echo $this->Html->script(
 //Config file location (if you use it)
 $configfile = CakePlugin::path('FeedbackIt').'Config'.DS.'feedbackit-config.php';
 
-//Defaults
+//Defaults in case config file cannot be loaded for some reason
 $forceauthusername	= false;
 $forceemail	        = false;
 $enablecopybyemail	= false;
@@ -57,7 +57,8 @@ if( file_exists($configfile) AND is_readable($configfile) ){
 
 <script>
     //Create URL using cake's url helper, this is used in feedbackit-functions.js
-    window.formURL = '<?php echo $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"savefeedback"),true); ?>';
+    <?php $formposturl = $this->Html->url(array("plugin"=>"feedback_it","controller"=>"feedback","action"=>"savefeedback"),true); ?>
+    window.formURL = '<?php echo $formposturl; ?>';
 </script>
 
 <div id="feedbackit-slideout">

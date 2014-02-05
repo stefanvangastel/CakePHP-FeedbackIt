@@ -62,6 +62,10 @@ This plugin is CakePHP Security component compatible.
 	`https://github.com/stefanvangastel/CakePHP-FeedbackIt/archive/master.zip`
 
 	You must place the FeedbackIt CakePHP plugin within your CakePHP 2.x app/Plugin directory.
+	
+	or load it with composer:
+	
+	`"stefanvangastel/feedback-it": "dev-master"`
 
 2. Load the plugin in app/Config/bootstrap.php:
 

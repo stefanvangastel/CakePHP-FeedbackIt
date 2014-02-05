@@ -22,7 +22,7 @@ echo $this->Html->script(
  Read config settings
 */
 //Config file location (if you use it)
-$configfile = APP.'Plugin'.DS.'FeedbackIt'.DS.'Config'.DS.'feedbackit-config.php';
+$configfile = CakePlugin::path('FeedbackIt').'Config'.DS.'feedbackit-config.php';
 
 //Defaults
 $forceauthusername	= false;

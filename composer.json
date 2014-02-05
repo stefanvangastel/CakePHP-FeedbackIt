@@ -1,6 +1,7 @@
 {
     "name": "stefanvangastel/feedback-it",
     "description": "Feedback or bugreport (with screenshot!) tab option in your CakePHP application. Data can be posted directly to Mantis, E-mail, Github issues, filesystem, etc.",
+    "type": "cakephp-plugin",
     "authors": [
         {
             "name": "Stefan van Gastel",
@@ -8,6 +9,6 @@
         }
     ],
     "require": {
-
+        "composer/installers": "*"
     }
 }

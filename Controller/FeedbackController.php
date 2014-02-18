@@ -76,9 +76,16 @@ class FeedbackController extends AppController {
 			$this->set('msg',$result['msg']);
 
             //Send a copy to the reciever:
-           if(!empty($feedbackObject['copyme'])){
-               $this->Feedbackstore->mail($feedbackObject,true);
-           }
+            if(!empty($feedbackObject['copyme'])){
+               	$this->Feedbackstore->mail($feedbackObject,true);
+            }
+
+            //Use secondarymethod to save:
+            $secondarymethod = Configure::read('FeedbackIt.secondarymethod')
+            if(method_exists($this->Feedbackstore, $secondarymethod)){
+            	$secondaryresult = $this->Feedbackstore->$secondarymethod($feedbackObject);
+	        }
+          
 		}else{
 			//Throw error, method required
 			throw new NotFoundException( __('No save method found in config file') );

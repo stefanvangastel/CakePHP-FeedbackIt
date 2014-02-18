@@ -180,7 +180,7 @@ class Feedbackstore extends AppModel {
 
 		//Mail specific: append browser, browser version, URL, etc to feedback :
         if($copyreporter){
-            $feedbackObject['feedback'] = '<p>A copy of your submitted feedback:</p>' . $feedbackObject['feedback'];
+            $feedbackObject['feedback'] = '<p>' . __d('feedback_it','A copy of your submitted feedback:') . '</p>' . $feedbackObject['feedback'];
         }
 		$feedbackObject['feedback'] .= "<p>";
 		$feedbackObject['feedback'] .= sprintf("Browser: %s %s<br />",$feedbackObject['browser'],$feedbackObject['browser_version']);

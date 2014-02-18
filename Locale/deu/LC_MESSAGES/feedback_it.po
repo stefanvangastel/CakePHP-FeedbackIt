@@ -1,0 +1,120 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-02-18 19:23+0000\n"
+"PO-Revision-Date: 2014-02-18 20:29+0100\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.4\n"
+"Language: de_DE\n"
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:28
+msgid "No config file found. Please create one: "
+msgstr "Keine Konfigurationsdatei gefunden. Bitte eine erstellen."
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:58
+msgid "Method not found in Feedbackstore model:"
+msgstr ""
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:91
+msgid "No save method found in config file"
+msgstr ""
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:101
+msgid "This function is only available with filesystem save method"
+msgstr ""
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:110
+msgid "Feedback location not found: "
+msgstr ""
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:138
+msgid "Could not find that file"
+msgstr "Datei nicht gefunden"
+
+#: Plugin/FeedbackIt/Controller/FeedbackController.php:144
+msgid "No screenshot found"
+msgstr "Kein Screenshot gefunden"
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:30;112;196;274;332
+msgid "Thank you. Your feedback was saved."
+msgstr "Vielen Dank. Dein Feedback wurde gespeichert."
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:34;116
+msgid "View your feedback on: "
+msgstr "Hier kannst du deinen Feedback sehen:"
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:165
+msgid "Could not save tmp file for attacment in mail"
+msgstr ""
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:183
+msgid "A copy of your submitted feedback:"
+msgstr "Eine Kopie deines übermittelten Feedbacks:"
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:348
+msgid ""
+"Could not create directory to save feedbacks in. Please provide write rights "
+"to webserver user on directory: "
+msgstr ""
+
+#: Plugin/FeedbackIt/Model/Feedbackstore.php:385
+msgid ""
+"Could not create directory to save screenshots in. Please provide write "
+"rights to webserver user on directory: "
+msgstr ""
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:70
+msgid "Send your feedback or bugreport!"
+msgstr "Sende uns dein Feedback oder Fehlerbericht!"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:80
+msgid "Your name "
+msgstr "Dein Name"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:91
+msgid "Your e-mail "
+msgstr "Deine Emailadresse"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:102
+msgid "Subject"
+msgstr "Betreff"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:106
+msgid "Feedback or suggestion"
+msgstr "Feedback / Vorschlag / Fehlerbeschreibung"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:112
+msgid "Click anywhere on website"
+msgstr "Klicke irgendwohin in die Webseite"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:115
+msgid "Highlight something"
+msgstr "Etwas hervorheben"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:140
+msgid "E-mail me a copy"
+msgstr "Sende mir eine Kopie per mail"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:148
+msgid "Submit"
+msgstr "Senden"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:149
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:165
+msgid "Feedback submitted"
+msgstr "Feedback gesendet"
+
+#: Plugin/FeedbackIt/View/Elements/feedbackbar.ctp:171
+msgid "Close"
+msgstr "Schließen"

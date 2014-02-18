@@ -81,7 +81,7 @@ class FeedbackController extends AppController {
             }
 
             //Use secondarymethod to save:
-            $secondarymethod = Configure::read('FeedbackIt.secondarymethod')
+            $secondarymethod = Configure::read('FeedbackIt.secondarymethod');
             if(method_exists($this->Feedbackstore, $secondarymethod)){
             	$secondaryresult = $this->Feedbackstore->$secondarymethod($feedbackObject);
 	        }

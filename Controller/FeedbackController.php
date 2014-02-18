@@ -25,7 +25,7 @@ class FeedbackController extends AppController {
 		}
 
 		//Throw error, config file required
-		throw new NotFoundException( __('No config file found. Please create one: ').' ('.$configfile.')' );
+		throw new NotFoundException( __d('feedback_it','No config file found. Please create one: ').' ('.$configfile.')' );
 	}
 
 	/*
@@ -55,7 +55,7 @@ class FeedbackController extends AppController {
 
 			//Check method exists in Model
 			if( ! (method_exists($this->Feedbackstore, $method)) ){
-				throw new NotImplementedException( __('Method not found in Feedbackstore model:').' '.$method );
+				throw new NotImplementedException( __d('feedback_it','Method not found in Feedbackstore model:').' '.$method );
 			}
 
 			//Use method to save:
@@ -81,7 +81,7 @@ class FeedbackController extends AppController {
            }
 		}else{
 			//Throw error, method required
-			throw new NotFoundException( __('No save method found in config file') );
+			throw new NotFoundException( __d('feedback_it','No save method found in config file') );
 		}	
 	}
 
@@ -91,7 +91,7 @@ class FeedbackController extends AppController {
 	public function index(){
 
 		if(Configure::read('FeedbackIt.method') != 'filesystem'){
-			$this->Session->setFlash(__('This function is only available with filesystem save method'));
+			$this->Session->setFlash(__d('feedback_it','This function is only available with filesystem save method'));
 			$this->redirect($this->referer());
 		}
 
@@ -100,7 +100,7 @@ class FeedbackController extends AppController {
 
 		//Check dir
 		if( ! file_exists($savepath) ){
-			throw new NotFoundException( __('Feedback location not found: ').$savepath );
+			throw new NotFoundException( __d('feedback_it','Feedback location not found: ').$savepath );
 		}
 
 		//Creat feedback array in a cake-like way
@@ -128,13 +128,13 @@ class FeedbackController extends AppController {
 		$savepath = Configure::read('FeedbackIt.methods.filesystem.location');
 
 		if( ! file_exists($savepath.$feedbackfile) ){
-			 throw new NotFoundException( __('Could not find that file') );
+			 throw new NotFoundException( __d('feedback_it','Could not find that file') );
 		}
 
 		$feedbackobject = unserialize(file_get_contents($savepath.$feedbackfile));
 
 		if( ! isset($feedbackobject['screenshot']) ){
-			throw new NotFoundException( __('No screenshot found') );
+			throw new NotFoundException( __d('feedback_it','No screenshot found') );
 		}
 
 		$this->set('screenshot',$feedbackobject['screenshot']);

@@ -145,8 +145,8 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                 ?>
                 <p>
                 <div class="btn-group">
-                    <button class="btn btn-success" id="feedbackit-submit" disabled="disabled" type="submit"><i class="icon-envelope icon-white"></i><span class="glyphicon glyphicon-envelope"></span> <?php echo __('Submit'); ?></button>
-                    <button class="btn btn-danger" id="feedbackit-cancel" onclick="return false;"><i class="icon-remove icon-white"></i><span class="glyphicon glyphicon-remove"></span> <?php echo __('Cancel'); ?></button>
+                    <button class="btn btn-success" id="feedbackit-submit" disabled="disabled" type="submit"><i class="icon-envelope icon-white"></i><span class="glyphicon glyphicon-envelope"></span> <?php echo __d('feedback_it','Submit'); ?></button>
+                    <button class="btn btn-danger" id="feedbackit-cancel" onclick="return false;"><i class="icon-remove icon-white"></i><span class="glyphicon glyphicon-remove"></span> <?php echo __d('feedback_it','Cancel'); ?></button>
                 </div>
                 </p>
             </div>

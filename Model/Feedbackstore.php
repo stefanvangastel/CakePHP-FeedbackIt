@@ -27,11 +27,11 @@ class Feedbackstore extends AppModel {
 
 		if ( $this->saveFile($feedbackObject) ){
 			
-			$msg = __('Thank you. Your feedback was saved.');
+			$msg = __d('feedback_it','Thank you. Your feedback was saved.');
 
 			if( Configure::read('FeedbackIt.returnlink') ){
 				$msg .= ' ';
-				$msg .= __('View your feedback on: ');
+				$msg .= __d('feedback_it','View your feedback on: ');
 				
 				$url  = Router::url(array('plugin'=>'feedback_it','controller'=>'feedback','action'=>'index'),true);
 
@@ -109,11 +109,11 @@ class Feedbackstore extends AppModel {
 	    	//Add screenshot to issue (Do not send as base64 despite what de WSDL says)
 			if ( $c->mc_issue_attachment_add( $username,  $password, $issueid, date('d-m-Y_H-i-s').'.png', 'image/png', $feedbackObject['screenshot'] )){
 				
-				$msg = __('Thank you. Your feedback was saved.');
+				$msg = __d('feedback_it','Thank you. Your feedback was saved.');
 
 				if( Configure::read('FeedbackIt.returnlink') ){
 					$msg .= '<br />';
-					$msg .= __('View your feedback on: ');
+					$msg .= __d('feedback_it','View your feedback on: ');
 					
 					list($url,$tmp) = explode('api',$api_url );
 					$url .= 'view.php?id=' . $issueid;
@@ -162,7 +162,7 @@ class Feedbackstore extends AppModel {
 		$tmpfile = APP.'tmp'.DS.time().'_'.rand(1000,9999).'.png';
 		if( ! file_put_contents($tmpfile, base64_decode($feedbackObject['screenshot'])) ){
 			//Need to save tmp file
-			throw new NotFoundException( __('Could not save tmp file for attacment in mail') );
+			throw new NotFoundException( __d('feedback_it','Could not save tmp file for attacment in mail') );
 		}
 
 		$email = new CakeEmail();
@@ -193,7 +193,7 @@ class Feedbackstore extends AppModel {
 
 		if( $email->send($feedbackObject['feedback']) ){
 			$returnobject['result'] = true;
-			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
 
 			return $returnobject;
 		}
@@ -271,7 +271,7 @@ class Feedbackstore extends AppModel {
 		}else{
 			//Set return value to true and return message
 			$returnobject['result'] = true;
-			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
 
 		}
 
@@ -329,7 +329,7 @@ class Feedbackstore extends AppModel {
 			$returnobject['msg'] = $HttpSocket->lastError();
 		}else{
 			$returnobject['result'] = true;
-			$returnobject['msg'] = __('Thank you. Your feedback was saved.');
+			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
 		}
 
 		return $returnobject;
@@ -345,7 +345,7 @@ class Feedbackstore extends AppModel {
     	if (!file_exists($savepath)){
 			if (!mkdir($savepath)){
 				//Throw error, directory is requird
-				throw new NotFoundException(__('Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
+				throw new NotFoundException(__d('feedback_it','Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
 			}
 		}
 
@@ -382,7 +382,7 @@ class Feedbackstore extends AppModel {
     	if (!file_exists($savepath)){
 			if (!mkdir($savepath)){
 				//Throw error, directory is requird
-				throw new NotFoundException(__('Could not create directory to save screenshots in. Please provide write rights to webserver user on directory: ') . $savepath);
+				throw new NotFoundException(__d('feedback_it','Could not create directory to save screenshots in. Please provide write rights to webserver user on directory: ') . $savepath);
 			}
 		}
 

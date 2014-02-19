@@ -128,7 +128,7 @@ if( file_exists($configfile) AND is_readable($configfile) ){
                                 }
                                 ?>
                             >
-                        I'm okay with <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo $termstext;?>">this</a></b>.
+                        <?php echo __d('feedback_it',"I'm okay with"); ?> <b><a id="feedbackit-okay-message" href="#" onclick="return false;" data-toggle="tooltip" title="<?php echo $termstext;?>"><?php echo __d('feedback_it','this'); ?></a></b>.
                     </label>
                 </p>
                 <?php

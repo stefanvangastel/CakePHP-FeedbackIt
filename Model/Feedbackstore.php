@@ -162,7 +162,7 @@ class Feedbackstore extends AppModel {
 		$tmpfile = APP.'tmp'.DS.time().'_'.rand(1000,9999).'.png';
 		if( ! file_put_contents($tmpfile, base64_decode($feedbackObject['screenshot'])) ){
 			//Need to save tmp file
-			throw new NotFoundException( __d('feedback_it','Could not save tmp file for attacment in mail') );
+			throw new NotFoundException( __d('feedback_it','Could not save tmp file for attachment in mail') );
 		}
 
 		$email = new CakeEmail();

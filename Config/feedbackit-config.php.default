@@ -3,13 +3,14 @@
 $config = array(
 	'FeedbackIt' => array(
 
-		'method'            => 'filesystem',	//Options: filesystem, mantis, mail, github
-		'secondarymethod'	=> '',	//the secondarymethod won't be checked for errors. No feedback for the user.
+		//Save method, multiple possible (array('filesystem','mail')): filesystem, mantis, mail, github, bitbucket. (See below)
+		'method'            => array('filesystem'),	//Only the first method will be checked and reported back to user
+
 		'returnlink'        => true,	//Return a link (if any) to the created ticket or report.
 		'enablecopybyemail' => true, //If set to true, visitors can check a 'send me a copy' button
 
 		'enableacceptterms' => true, //If set to true, visitors have to check an accept terms checkbox
-		'termstext'         => 'When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.', //The text to display on the terms button
+		'termstext'         => __d('feedback_it','When you submit, a screenshot (of only this website) will be taken to aid us in processing your feedback or bugreport.'), //The text to display on the terms button, using __d makes translation possible
 
 		'forceauthusername' => false, //If set to true, the AuthComponent::user('name') var or equivalent is made un-editable in the form
 		'forceemail'        => true, //If set to true, the AuthComponent::user('email') var or equivalent is made un-editable in the form

@@ -51,40 +51,48 @@ class FeedbackController extends AppController {
 		$feedbackObject = $this->request->data;
 		
 		//Determine method of saving
-		if( $method = Configure::read('FeedbackIt.method') ){
+		$methods = Configure::read('FeedbackIt.method');
 
-			//Check method exists in Model
-			if( ! (method_exists($this->Feedbackstore, $method)) ){
-				throw new NotImplementedException( __d('feedback_it','Method not found in Feedbackstore model:').' '.$method );
-			}
+		if( !empty($methods) AND is_array($methods) ){
 
-			//Use method to save:
-			$result = $this->Feedbackstore->$method($feedbackObject);
+			//Multiple methods possible
+			foreach($methods as $index => $method){
 
-			if( ! $result['result'] ){			
-				$this->response->statusCode(500);
-				
-				if( empty($result['msg']) ){
-					$result['msg'] = 'Error saving feedback.';
-				}	
-			}else{
-				if( empty($result['msg']) ){
-					$result['msg'] = 'Your feedback was saved succesfully.';
+				//Check method exists in Model
+				if( ! (method_exists($this->Feedbackstore, $method)) AND $index != 0 ){ //Only throw error on first method
+					throw new NotImplementedException( __d('feedback_it','Method not found in Feedbackstore model:').' '.$method );
 				}
-			}
 
-			$this->set('msg',$result['msg']);
+				//If not first method, go to next. No user feedback for methods 2 -> n
+				if($index != 0){
+					$this->Feedbackstore->$method($feedbackObject);
+					continue;
+				}
 
-            //Send a copy to the reciever:
+				//Parse result of first method only
+				$result = $this->Feedbackstore->$method($feedbackObject);
+
+				//Prepare result
+				if( ! $result['result'] ){			
+					$this->response->statusCode(500);
+					
+					if( empty($result['msg']) ){
+						$result['msg'] = __d('feedback_it','Error saving feedback.');
+					}	
+				}else{
+					if( empty($result['msg']) ){
+						$result['msg'] = __d('feedback_it','Your feedback was saved succesfully.');
+					}
+				}
+
+				$this->set('msg',$result['msg']);
+                     
+		    } //End method loop
+
+		    //Send a copy to the reciever:
             if(!empty($feedbackObject['copyme'])){
                	$this->Feedbackstore->mail($feedbackObject,true);
-            }
-
-            //Use secondarymethod to save:
-            $secondarymethod = Configure::read('FeedbackIt.secondarymethod');
-            if(method_exists($this->Feedbackstore, $secondarymethod)){
-            	$secondaryresult = $this->Feedbackstore->$secondarymethod($feedbackObject);
-	        }
+            }	 
           
 		}else{
 			//Throw error, method required
@@ -97,7 +105,9 @@ class FeedbackController extends AppController {
 	 */
 	public function index(){
 
-		if(Configure::read('FeedbackIt.method') != 'filesystem'){
+		$methods = Configure::read('FeedbackIt.method');
+
+		if( ! in_array('filesystem', $methods) ){
 			$this->Session->setFlash(__d('feedback_it','This function is only available with filesystem save method'));
 			$this->redirect($this->referer());
 		}

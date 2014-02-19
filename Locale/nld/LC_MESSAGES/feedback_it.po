@@ -1,0 +1,149 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-02-19 22:06+0100\n"
+"PO-Revision-Date: 2014-02-19 22:07+0100\n"
+"Last-Translator: Stefan van Gastel <stefanvangastel@gmail.com>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: Config/feedbackit-config.php:11
+msgid ""
+"When you submit, a screenshot (of only this website) will be taken to aid us "
+"in processing your feedback or bugreport."
+msgstr ""
+"Wanneer u verstuurd zal er (van alleen deze webpagina) een screenshot "
+"gemaakt worden om ons te helpen in het verwerken van uw feedback of "
+"bugmelding."
+
+#: Controller/FeedbackController.php:28
+msgid "No config file found. Please create one: "
+msgstr "Geen configuratiebestand gevonden. Maak deze aub aan."
+
+#: Controller/FeedbackController.php:62
+msgid "Method not found in Feedbackstore model:"
+msgstr "Methode niet gevonden in Feedbackstore model:"
+
+#: Controller/FeedbackController.php:76
+msgid "Error saving feedback."
+msgstr "Fout tijdens opslaan feedback."
+
+#: Controller/FeedbackController.php:80
+msgid "Your feedback was saved succesfully."
+msgstr "Uw feedback is succesvol opgeslagen"
+
+#: Controller/FeedbackController.php:95
+msgid "No save method found in config file"
+msgstr "Geen opslag methode gevonden in configuratiebestand"
+
+#: Controller/FeedbackController.php:107
+msgid "This function is only available with filesystem save method"
+msgstr "Deze functie is alleen beschikbaar bij de filesystem methode"
+
+#: Controller/FeedbackController.php:116
+msgid "Feedback location not found: "
+msgstr "Feedback locatie niet gevonden:"
+
+#: Controller/FeedbackController.php:144
+msgid "Could not find that file"
+msgstr "Kan dit bestand niet vinden"
+
+#: Controller/FeedbackController.php:150
+msgid "No screenshot found"
+msgstr "Geen screenshot gevonden"
+
+#: Model/Feedbackstore.php:30;112;196;274;332
+msgid "Thank you. Your feedback was saved."
+msgstr "Dank u. Uw feedback is opgeslagen."
+
+#: Model/Feedbackstore.php:34;116
+msgid "View your feedback on: "
+msgstr "Bekijk uw feedback op:"
+
+#: Model/Feedbackstore.php:165
+msgid "Could not save tmp file for attachment in mail"
+msgstr "Kon tijdelijk bestand voor bijlage in email niet opslaan"
+
+#: Model/Feedbackstore.php:183
+msgid "A copy of your submitted feedback:"
+msgstr "Een kopie van de door u verstuurde feedback:"
+
+#: Model/Feedbackstore.php:348
+msgid ""
+"Could not create directory to save feedbacks in. Please provide write rights "
+"to webserver user on directory: "
+msgstr ""
+"Kon geen directory aanmaken om de feedback in op te slaan. Geef aub de "
+"webserver gebruiker schrijfrechten op deze directory:"
+
+#: Model/Feedbackstore.php:385
+msgid ""
+"Could not create directory to save screenshots in. Please provide write "
+"rights to webserver user on directory: "
+msgstr ""
+"Kon geen directory aanmaken om de screenshot in op te slaan. Geef aub de "
+"webserver gebruiker schrijfrechten op deze directory:"
+
+#: View/Elements/feedbackbar.ctp:70
+msgid "Send your feedback or bugreport!"
+msgstr "Stuur uw feedback of bugmelding!"
+
+#: View/Elements/feedbackbar.ctp:80
+msgid "Your name "
+msgstr "Uw naam"
+
+#: View/Elements/feedbackbar.ctp:91
+msgid "Your e-mail "
+msgstr "Uw e-mail"
+
+#: View/Elements/feedbackbar.ctp:102
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: View/Elements/feedbackbar.ctp:106
+msgid "Feedback or suggestion"
+msgstr "Feedback of suggestie"
+
+#: View/Elements/feedbackbar.ctp:112
+msgid "Click anywhere on website"
+msgstr "Klik ergens op de website"
+
+#: View/Elements/feedbackbar.ctp:115
+msgid "Highlight something"
+msgstr "Markeer iets"
+
+#: View/Elements/feedbackbar.ctp:131
+msgid "I'm okay with"
+msgstr "Ik ga hiermee"
+
+#: View/Elements/feedbackbar.ctp:131
+msgid "this"
+msgstr "akkoord"
+
+#: View/Elements/feedbackbar.ctp:140
+msgid "E-mail me a copy"
+msgstr "E-mail mij een kopie"
+
+#: View/Elements/feedbackbar.ctp:148
+msgid "Submit"
+msgstr "Verstuur"
+
+#: View/Elements/feedbackbar.ctp:149
+msgid "Cancel"
+msgstr "Annuleer"
+
+#: View/Elements/feedbackbar.ctp:165
+msgid "Feedback submitted"
+msgstr "Feedback verstuurd"
+
+#: View/Elements/feedbackbar.ctp:171
+msgid "Close"
+msgstr "Sluiten"

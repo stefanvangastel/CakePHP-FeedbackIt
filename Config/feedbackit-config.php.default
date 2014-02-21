@@ -55,6 +55,15 @@ $config = array(
 
 				'localimagestore' => true, //WARNING: When set to true, screenshot image will be stored to the public webroot directory of this plugin
 			),
+	    	'jira' => array(
+				'api_url'=> 'http://localhost:2990/jira/rest/api/2/issue/', //https://developer.atlassian.com/display/JIRADEV/JIRA+REST+APIs
+				'username'=> 'foo', //The Jira user to use
+				'password'=> 'bar', //The password of the above Jira user
+				'project_id'=> 10000, //Set the project id of the project to put this feedback in 
+	        	'issuetype'=> 'Bug', //Set the issue type that will be used, you can use the name
+
+				'localimagestore' => true, //WARNING: When set to true, screenshot image will be stored to the public webroot directory of this plugin
+			)
 	    )
 	)    
 );

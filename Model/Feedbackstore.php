@@ -222,7 +222,7 @@ class Feedbackstore extends AppModel {
 		$password			= Configure::read('FeedbackIt.methods.github.password');
 		$localimagestore 	= Configure::read('FeedbackIt.methods.github.localimagestore');
 
-		//Mantis specific: append browser, browser version and URL to feedback:
+		//Github specific: append browser, browser version and URL to feedback:
 		$feedbackObject['feedback'] .= "\n\n";
 		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
 		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n",$feedbackObject['url']);
@@ -357,7 +357,7 @@ class Feedbackstore extends AppModel {
 				$answer = json_decode($result->body);
 
 				//Create new url:
-				//Replace api prefix with GitHub public domain:
+				//Replace api prefix with bitbucket public domain:
 				$url = str_replace('/api/1.0/repositories/', '/', $api_url);
 				$url = str_replace('/issues', '/issue', $url);
 
@@ -366,6 +366,104 @@ class Feedbackstore extends AppModel {
 
 				$returnobject['msg'] .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
 			}
+		}
+
+		return $returnobject;
+	}
+
+	/*
+	JIRA API v2
+	https://developer.atlassian.com/display/JIRADEV/JIRA+REST+APIs
+	 */
+	public function jira($feedbackObject = null){
+
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
+		if(empty($feedbackObject)){
+			return $returnobject;
+		}
+
+		//Read settings
+		$api_url			= Configure::read('FeedbackIt.methods.jira.api_url');
+		$username			= Configure::read('FeedbackIt.methods.jira.username');
+		$password			= Configure::read('FeedbackIt.methods.jira.password');
+		$project_id			= Configure::read('FeedbackIt.methods.jira.project_id');
+		$issuetype			= Configure::read('FeedbackIt.methods.jira.issuetype');
+		$localimagestore 	= Configure::read('FeedbackIt.methods.jira.localimagestore');
+
+		//Mantis specific: append browser, browser version and URL to feedback:
+		$feedbackObject['feedback'] .= "\n\n";
+		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
+		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n",$feedbackObject['url']);
+        $feedbackObject['feedback'] .= sprintf("**OS**: %s\n\n",$feedbackObject['os']);
+		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n",$feedbackObject['name']);
+
+		// WARNING: This may not work for sites with different domains (or dev environments)
+    	//          If the given URL is not public, Jira won't display the screenshot
+		if ($localimagestore){
+			//Create filename based on timestamp and random number (to prevent collisions)
+			if( $imagename = $this->saveScreenshot($feedbackObject) ){
+				$viewimageUrl  = Router::url("/feedback_it/img/screenshots/$imagename",true);
+
+				$feedbackObject['feedback'] .= sprintf("**Screenshot**:\n![screenshot](%s)", $viewimageUrl);
+			}
+		}
+		// Jira still doesn't support this kind of image format in Markup Language
+		// $content = '[screenshot]: data:image/png;base64,'. $feedbackObject['screenshot'] . " \n\n";
+
+		//Prepare data 
+		$data = array();
+		$data['fields']['project']['id'] = $project_id;
+		$data['fields']['issuetype']['name'] = $issuetype;		
+		$data['fields']['summary'] = $feedbackObject['subject'];
+		$data['fields']['description'] = $feedbackObject['feedback'];
+		$data_string = json_encode($data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $api_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+
+		$result 		= curl_exec($ch);
+		$curlstatuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if( ! $result){
+			//Return curl error
+			$returnobject['msg'] = curl_error($ch);
+
+		}else if($curlstatuscode >= 400){
+			//Return http error and message
+			$returnobject['msg'] = 'Error in Jira API call'; //Can contain linebreaks
+
+		}else{
+			//Set return value to true and return message
+			$returnobject['result'] = true;
+			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
+
+			if( Configure::read('FeedbackIt.returnlink') ){
+				$returnobject['msg'] .= '<br />';
+				$returnobject['msg'] .= __d('feedback_it','View your feedback on: ');
+				
+				//Get response from jira api
+				$answer = json_decode($result);
+
+				//Create new url:
+				//Replace api prefix with GitHub public domain:
+				$url = str_replace('/rest/api/2/issue/', '/browse/', $api_url);
+
+				//Append issue number
+				$url .= $answer->key;
+
+				$returnobject['msg'] .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+			}
+
 		}
 
 		return $returnobject;
@@ -382,7 +480,7 @@ class Feedbackstore extends AppModel {
 			if (!mkdir($savepath)){
 				//Throw error, directory is requird
 				throw new NotFoundException(__d('feedback_it','Could not create directory to save feedbacks in. Please provide write rights to webserver user on directory: ') . $savepath);
-			}
+			} 
 		}
 
 		if (file_put_contents($savepath . $feedbackObject['filename'], serialize($feedbackObject))){

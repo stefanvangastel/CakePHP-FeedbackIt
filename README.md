@@ -32,6 +32,7 @@ Features pure client-side screenshot function including user-placed highlight / 
 * [GitHub (repo issues)](https://help.github.com/articles/github-glossary#issue)
 * Email
 * [Bitbucket (repo issues)](https://confluence.atlassian.com/display/BITBUCKET/Use+the+issue+tracker)
+* [Jira](https://www.atlassian.com/software/jira)
 
 <a name="requirements"/>
 ## Requirements

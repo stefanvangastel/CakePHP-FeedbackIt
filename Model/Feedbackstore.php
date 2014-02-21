@@ -273,6 +273,24 @@ class Feedbackstore extends AppModel {
 			$returnobject['result'] = true;
 			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
 
+			if( Configure::read('FeedbackIt.returnlink') ){
+				$returnobject['msg'] .= '<br />';
+				$returnobject['msg'] .= __d('feedback_it','View your feedback on: ');
+				
+				//Get response from github api
+				$answer = json_decode($result);
+
+				//Create new url:
+				//Replace api prefix with GitHub public domain:
+				$url = str_replace('/api.', '/', $api_url);
+				$url = str_replace('/repos/', '/', $url);
+
+				//Append issue number
+				$url .= '/' . $answer->number;
+
+				$returnobject['msg'] .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+			}
+
 		}
 
 		return $returnobject;
@@ -330,6 +348,24 @@ class Feedbackstore extends AppModel {
 		}else{
 			$returnobject['result'] = true;
 			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
+			
+			if( Configure::read('FeedbackIt.returnlink') ){
+				$returnobject['msg'] .= '<br />';
+				$returnobject['msg'] .= __d('feedback_it','View your feedback on: ');
+				
+				//Get response from github api
+				$answer = json_decode($result->body);
+
+				//Create new url:
+				//Replace api prefix with GitHub public domain:
+				$url = str_replace('/api/1.0/repositories/', '/', $api_url);
+				$url = str_replace('/issues', '/issue', $url);
+
+				//Append issue number
+				$url .= '/' . $answer->local_id;
+
+				$returnobject['msg'] .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+			}
 		}
 
 		return $returnobject;

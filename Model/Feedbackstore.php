@@ -470,6 +470,94 @@ class Feedbackstore extends AppModel {
 	}
 
 	/*
+	Redmine API 
+	 */
+	public function redmine($feedbackObject = null){
+
+		//Standard return value
+		$returnobject['result'] = false;
+		$returnobject['msg'] = '';
+
+		if(empty($feedbackObject)){
+			return $returnobject;
+		}
+
+		//Read settings
+		$api_url			= Configure::read('FeedbackIt.methods.redmine.api_url');
+		$username			= Configure::read('FeedbackIt.methods.redmine.username');
+		$password			= Configure::read('FeedbackIt.methods.redmine.password');
+		$project_id			= Configure::read('FeedbackIt.methods.redmine.project_id');
+		$tracker_id			= Configure::read('FeedbackIt.methods.redmine.tracker_id');
+	
+		//Redmine specific: append browser, browser version and URL to feedback:
+		$feedbackObject['feedback'] .= "\n\n";
+		$feedbackObject['feedback'] .= sprintf("**Browser**: %s %s\n\n",$feedbackObject['browser'],$feedbackObject['browser_version']);
+		$feedbackObject['feedback'] .= sprintf("**Url**: %s\n\n",$feedbackObject['url']);
+        $feedbackObject['feedback'] .= sprintf("**OS**: %s\n\n",$feedbackObject['os']);
+		$feedbackObject['feedback'] .= sprintf("**By**: %s\n\n",$feedbackObject['name']);
+
+		//Prepare data 
+		$data = array();
+		$data['issue']['project_id'] = $project_id;
+		$data['issue']['tracker_id'] = $tracker_id;		
+		$data['issue']['subject'] = $feedbackObject['subject'];
+		$data['issue']['description'] = $feedbackObject['feedback'];
+		$data_string = json_encode($data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $api_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+
+		$result 		= curl_exec($ch);
+		$curlstatuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if( ! $result){
+			//Return curl error
+			$returnobject['msg'] = curl_error($ch);
+
+		}else if($curlstatuscode >= 400){
+			//Return http error and message
+			$returnobject['msg'] = "Error in Redmine API call ($curlstatuscode)"; //Can contain linebreaks
+
+		}else{
+
+			//TODO: Update with image
+
+
+			//Set return value to true and return message
+			$returnobject['result'] = true;
+			$returnobject['msg'] = __d('feedback_it','Thank you. Your feedback was saved.');
+
+			if( Configure::read('FeedbackIt.returnlink') ){
+				$returnobject['msg'] .= '<br />';
+				$returnobject['msg'] .= __d('feedback_it','View your feedback on: ');
+				
+				//Get response from jira api
+				$answer = json_decode($result);
+
+				//Create new url:
+				//Replace api prefix with GitHub public domain:
+				$url = str_replace('.json', '/', $api_url);
+
+				//Append issue number
+				$url .= $answer->issue->id;
+
+				$returnobject['msg'] .= '<a target="_blank" href="'.$url.'">'.$url.'</a>';
+			}
+
+		}
+
+		return $returnobject;
+	}
+
+
+	/*
    	 * Auxiliary function that saves the file 
      */
   	private function saveFile($feedbackObject = null){

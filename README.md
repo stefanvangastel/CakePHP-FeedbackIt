@@ -33,6 +33,7 @@ Features pure client-side screenshot function including user-placed highlight / 
 * Email
 * [Bitbucket (repo issues)](https://confluence.atlassian.com/display/BITBUCKET/Use+the+issue+tracker)
 * [Jira](https://www.atlassian.com/software/jira)
+* [Redmine](http://www.redmine.org)
 
 <a name="requirements"/>
 ## Requirements

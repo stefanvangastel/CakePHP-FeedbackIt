@@ -63,6 +63,13 @@ $config = array(
 	        	'issuetype'=> 'Bug', //Set the issue type that will be used, you can use the name
 
 				'localimagestore' => true, //WARNING: When set to true, screenshot image will be stored to the public webroot directory of this plugin
+			),
+	    	'redmine' => array(
+				'api_url'=> 'http://example.com/redmine/issues.json', //Use REST api. http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
+				'username'=> 'foo', //The Redmine user to use
+				'password'=> 'bar', //The password of the above Redmine user
+				'project_id'=> 1, //Set the project id of the project to put this feedback in 
+	        	'tracker_id'=> 1, //Set the tracker type that will be used, 1 = bug
 			)
 	    )
 	)    

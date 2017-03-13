@@ -93,3 +93,5 @@ To testdrive this puppy; [http://stefanvangastel.nl/feedbackitdemo/](http://stef
 
 ![Example of form](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_1.png "Example of form")
 ![Example of result](https://raw.github.com/stefanvangastel/CakePHP-FeedbackIt/master/examples/feedbackit_2.png "Example of result")
+
+End
